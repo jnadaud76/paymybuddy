@@ -21,21 +21,74 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int transactionId;
-    @Column(name = "DATE")
+    @Column(name = "DATE", nullable = false)
     private LocalDateTime date;
     @ManyToOne
-    @JoinColumn (name = "RECIPIEND")
+    @JoinColumn (name = "recipiend", referencedColumnName = "ID", nullable = false)
     private Person recipiend;
     @ManyToOne
-    @JoinColumn(name = "SENDER")
+    @JoinColumn(name = "sender", referencedColumnName = "ID", nullable = false)
     private Person sender;
-    @Column(name = "AMOUNT")
+    @Column(name = "AMOUNT", nullable = false)
     private int amount;
-    @Column(name = "DESCRIPTION")
+    @Column(name = "DESCRIPTION" , length=100)
     private String description;
-    @Column(name = "FEE_AMOUNT")
+    @Column(name = "FEE_AMOUNT", nullable = false, precision = 5, scale=2)
     private double feeAmount;
 
+    public int getTransactionId() {
+        return transactionId;
+    }
 
+    public void setTransactionId(int transactionId) {
+        this.transactionId = transactionId;
+    }
 
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public Person getRecipiend() {
+        return recipiend;
+    }
+
+    public void setRecipiend(Person recipiend) {
+        this.recipiend = recipiend;
+    }
+
+    public Person getSender() {
+        return sender;
+    }
+
+    public void setSender(Person sender) {
+        this.sender = sender;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getFeeAmount() {
+        return feeAmount;
+    }
+
+    public void setFeeAmount(double feeAmount) {
+        this.feeAmount = feeAmount;
+    }
 }
