@@ -6,18 +6,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import javax.annotation.security.RolesAllowed;
-
+/*
 @RestController
 public class LoginController {
 
     @RolesAllowed("USER")
-    @RequestMapping("/**")
-    public String getUser()
-    {
+    @RequestMapping("/user")
+    public String getUser() {
         return "Welcome User";
     }
 
-   /* @RolesAllowed({"USER","ADMIN"})
+    @RolesAllowed({"USER","ADMIN"})
     @RequestMapping("/admin")
     public String getAdmin()
     {
@@ -93,4 +92,4 @@ public class LoginController {
     }*/
 
 
-}
+

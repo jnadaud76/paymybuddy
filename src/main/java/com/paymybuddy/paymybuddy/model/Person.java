@@ -26,18 +26,25 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int personId;
+
     @Column(name = "FIRSTNAME", nullable = false, length=100)
     private String firstName;
+
     @Column(name = "LASTNAME", nullable = false, length=100)
     private String lastName;
+
     @Column(name = "EMAIL", unique = true, nullable = false, length=100)
     private String email;
-    @Column(name = "PASSWORD", nullable = false, length=20)
+
+    @Column(name = "PASSWORD", nullable = false, length=100)
     private String password;
+
     @Column(name = "IBAN", nullable = false, length=34)
     private String iban;
+
     @Column(name = "AMOUNT_AVAILABLE",nullable = false, precision = 8, scale=2)
     private double amountAvailable;
+
     @OneToMany(
             mappedBy = "sender",
             cascade = CascadeType.PERSIST
@@ -57,6 +64,33 @@ public class Person {
             inverseJoinColumns = @JoinColumn(name = "CONNECTION_ID")
     )
     private Set<Person> connections = new HashSet<>();
+
+    public Person(){
+
+    }
+
+    public Person(int personId, String firstName, String lastName, String email, String password, String iban, double amountAvailable) {
+        this.personId = personId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.iban = iban;
+        this.amountAvailable = amountAvailable;
+    }
+
+    public Person(int personId, String firstName, String lastName, String email,
+                  String password, String iban, double amountAvailable,
+                  Set<Person> connections) {
+        this.personId = personId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.iban = iban;
+        this.amountAvailable = amountAvailable;
+        this.connections = connections;
+    }
 
     public int getPersonId() {
         return personId;

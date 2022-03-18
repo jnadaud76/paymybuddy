@@ -21,18 +21,24 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int transactionId;
+
     @Column(name = "DATE", nullable = false)
     private LocalDateTime date;
+
     @ManyToOne
     @JoinColumn (name = "recipiend", referencedColumnName = "ID", nullable = false)
     private Person recipiend;
+
     @ManyToOne
     @JoinColumn(name = "sender", referencedColumnName = "ID", nullable = false)
     private Person sender;
+
     @Column(name = "AMOUNT", nullable = false)
     private int amount;
+
     @Column(name = "DESCRIPTION" , length=100)
     private String description;
+
     @Column(name = "FEE_AMOUNT", nullable = false, precision = 5, scale=2)
     private double feeAmount;
 

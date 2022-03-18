@@ -1,8 +1,6 @@
 package com.paymybuddy.paymybuddy.service;
 
-import com.paymybuddy.paymybuddy.model.Person;
 import com.paymybuddy.paymybuddy.model.Transaction;
-import com.paymybuddy.paymybuddy.repository.PersonRepository;
 import com.paymybuddy.paymybuddy.repository.TransactionRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class TransactionService {
+public class TransactionService implements ITransactionService {
 
     @Autowired
     private TransactionRepository transactionRepository;
