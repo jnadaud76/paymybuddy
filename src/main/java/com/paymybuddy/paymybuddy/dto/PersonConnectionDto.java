@@ -1,5 +1,7 @@
 package com.paymybuddy.paymybuddy.dto;
 
+import java.util.Objects;
+
 public class PersonConnectionDto {
 
     private int personConnectionDtoId;
@@ -54,5 +56,18 @@ public class PersonConnectionDto {
 
     public void setAmountAvailable(double amountAvailable) {
         this.amountAvailable = amountAvailable;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PersonConnectionDto that = (PersonConnectionDto) o;
+        return personConnectionDtoId == that.personConnectionDtoId && Double.compare(that.amountAvailable, amountAvailable) == 0 && firstName.equals(that.firstName) && lastName.equals(that.lastName) && email.equals(that.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(personConnectionDtoId, firstName, lastName, email, amountAvailable);
     }
 }

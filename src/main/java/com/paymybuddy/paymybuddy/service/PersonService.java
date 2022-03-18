@@ -26,12 +26,38 @@ public class PersonService implements IPersonService {
         return new BCryptPasswordEncoder();
     }*/
 
-    public Iterable<Person> getPersons(){
-        return personRepository.findAll();
+    public Set<PersonFullDto> getPersons(){
+        Set<Person> persons = personRepository.findAll();
+        Set<PersonFullDto> personFullDtoIterable = new HashSet<>();
+        for (Person p : persons){
+            PersonFullDto personFullDto = new PersonFullDto();
+            personFullDto.setPersonFullDtoId(p.getPersonId());
+            personFullDto.setFirstName(p.getFirstName());
+            personFullDto.setLastName(p.getLastName());
+            personFullDto.setEmail(p.getEmail());
+            personFullDto.setPassword(p.getPassword());
+            personFullDto.setIban(p.getIban());
+            personFullDto.setAmountAvailable(p.getAmountAvailable());
+            personFullDtoIterable.add(personFullDto);
+        }
+        return personFullDtoIterable;
     }
 
-    public Optional<Person> getPersonById(Integer id) {
-        return personRepository.findById(id);
+    public PersonFullDto getPersonById(Integer id) {
+        if (personRepository.existsById(id)) {
+            Person person = personRepository.findById(id).get();
+            PersonFullDto personFullDto = new PersonFullDto();
+            personFullDto.setPersonFullDtoId(person.getPersonId());
+            personFullDto.setFirstName(person.getFirstName());
+            personFullDto.setLastName(person.getLastName());
+            personFullDto.setEmail(person.getEmail());
+            personFullDto.setPassword(person.getPassword());
+            personFullDto.setIban(person.getIban());
+            personFullDto.setAmountAvailable(person.getAmountAvailable());
+            return personFullDto;
+        } else {
+            return null;
+        }
     }
 
     public Person addPerson(PersonFullDto personFullDto) {
@@ -48,12 +74,17 @@ public class PersonService implements IPersonService {
     }
 
     public void deletePersonById(Integer id) {
-        personRepository.deleteById(id);
+        if (personRepository.existsById(id)) {
+            personRepository.deleteById(id);
+        } else {
+            //LOGGER.error("Person doesn't exist in Set", new IllegalArgumentException());
+            throw new IllegalArgumentException();
+        }
     }
 
     public void addConnection (Integer personId, Integer connectionId){
-        Person person = getPersonById(personId).get();
-        Person connection = getPersonById(connectionId).get();
+        Person person = personRepository.findById(personId).get();
+        Person connection = personRepository.findById(connectionId).get();
         PersonConnectionDto personConnectionDto = new PersonConnectionDto();
         personConnectionDto.setPersonConnectionDtoId(connection.getPersonId());
         personConnectionDto.setFirstName(connection.getFirstName());
@@ -63,14 +94,32 @@ public class PersonService implements IPersonService {
         if (getConnectionsFromPerson(personId).contains(personConnectionDto)) {
             throw new IllegalArgumentException();
         } else {
-            person.getConnections().add(connection);
+                person.getConnections().add(connection);
+                personRepository.save(person);
+            }
+        }
+
+
+    public void removeConnection (Integer personId, Integer connectionId) {
+        Person person = personRepository.findById(personId).get();
+        Person connection = personRepository.findById(connectionId).get();
+        PersonConnectionDto personConnectionDto = new PersonConnectionDto();
+        personConnectionDto.setPersonConnectionDtoId(connection.getPersonId());
+        personConnectionDto.setFirstName(connection.getFirstName());
+        personConnectionDto.setLastName(connection.getLastName());
+        personConnectionDto.setEmail(connection.getEmail());
+        personConnectionDto.setAmountAvailable(connection.getAmountAvailable());
+        if (!(getConnectionsFromPerson(personId).contains(personConnectionDto))) {
+            throw new IllegalArgumentException();
+        } else {
+            person.getConnections().remove(connection);
             personRepository.save(person);
 
         }
     }
 
     public Set<PersonConnectionDto> getConnectionsFromPerson (Integer personId){
-        Person person = getPersonById(personId).get();
+        Person person = personRepository.findById(personId).get();
         Set<PersonConnectionDto> connectionDtoSet = new HashSet<>();
 
         for (Person p : person.getConnections()){

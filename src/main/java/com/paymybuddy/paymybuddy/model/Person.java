@@ -1,8 +1,11 @@
 package com.paymybuddy.paymybuddy.model;
 
+import com.paymybuddy.paymybuddy.dto.PersonConnectionDto;
+
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,9 +20,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.transaction.Transactional;
 
 @Entity
 @DynamicUpdate
+@Transactional
 @Table(name = "person")
 public class Person {
     @Id
@@ -52,16 +57,17 @@ public class Person {
     private Set<Transaction> transactions = new HashSet<>();
 
     @ManyToMany(
-            fetch = FetchType.LAZY,
-            cascade = {
+          fetch = FetchType.LAZY,
+
+          cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
-            }
+                    }
     )
     @JoinTable(
             name = "person_connection",
-            joinColumns = @JoinColumn(name = "PERSON_ID"),
-            inverseJoinColumns = @JoinColumn(name = "CONNECTION_ID")
+            joinColumns = @JoinColumn(name = "PERSON_ID", referencedColumnName = "ID", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "CONNECTION_ID", referencedColumnName = "ID", nullable = false)
     )
     private Set<Person> connections = new HashSet<>();
 
@@ -163,4 +169,5 @@ public class Person {
     public void setConnections(Set<Person> connections) {
         this.connections = connections;
     }
+
 }

@@ -8,9 +8,9 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface IPersonService {
-    Iterable<Person> getPersons();
+    Set<PersonFullDto> getPersons();
 
-    Optional<Person> getPersonById(Integer id);
+    PersonFullDto getPersonById(Integer id);
 
     Person addPerson(PersonFullDto personFullDto);
 
@@ -19,5 +19,7 @@ public interface IPersonService {
     void addConnection(Integer personId, Integer connectionId);
 
     Set<PersonConnectionDto> getConnectionsFromPerson (Integer personId);
+
+    void removeConnection (Integer personId, Integer connectionId);
 
 }
