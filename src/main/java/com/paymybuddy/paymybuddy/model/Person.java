@@ -1,11 +1,11 @@
 package com.paymybuddy.paymybuddy.model;
 
-import com.paymybuddy.paymybuddy.dto.PersonConnectionDto;
+
 
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.HashSet;
-import java.util.Objects;
+
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -70,6 +70,21 @@ public class Person {
             inverseJoinColumns = @JoinColumn(name = "CONNECTION_ID", referencedColumnName = "ID", nullable = false)
     )
     private Set<Person> connections = new HashSet<>();
+
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            }
+    )
+    @JoinTable(
+            name = "person_connection",
+            joinColumns = @JoinColumn(name = "CONNECTION_ID", referencedColumnName = "ID", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "PERSON_ID", referencedColumnName = "ID", nullable = false)
+    )
+    private Set<Person> connectionsOf = new HashSet<>();
 
     public Person(){
 
@@ -170,4 +185,11 @@ public class Person {
         this.connections = connections;
     }
 
+    public Set<Person> getConnectionsOf() {
+        return connectionsOf;
+    }
+
+    public void setConnectionsOf(Set<Person> connectionsOf) {
+        this.connectionsOf = connectionsOf;
+    }
 }

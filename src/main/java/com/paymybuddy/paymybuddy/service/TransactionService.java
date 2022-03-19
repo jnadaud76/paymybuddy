@@ -1,12 +1,16 @@
 package com.paymybuddy.paymybuddy.service;
 
+import com.paymybuddy.paymybuddy.dto.TransactionFullDto;
 import com.paymybuddy.paymybuddy.model.Transaction;
 import com.paymybuddy.paymybuddy.repository.TransactionRepository;
+import com.paymybuddy.paymybuddy.util.Calculator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class TransactionService implements ITransactionService {
@@ -14,7 +18,14 @@ public class TransactionService implements ITransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    public Iterable<Transaction> getTransactions(){
+    @Autowired
+    private IConversionService conversionService;
+
+    @Autowired
+    private Calculator calculator;
+
+
+    public Set<Transaction> getTransactions(){
         return transactionRepository.findAll();
     }
 
@@ -22,7 +33,9 @@ public class TransactionService implements ITransactionService {
         return transactionRepository.findById(id);
             }
 
-    public Transaction addTransaction(Transaction transaction) {
+    public Transaction addTransaction(TransactionFullDto transactionFullDto) {
+        Transaction transaction = conversionService.fullDtoToTransaction(transactionFullDto);
+        calculator.updateAmountAvailable(transactionFullDto.getRecipient(),transactionFullDto.getSender(), transactionFullDto.getAmount());
         return transactionRepository.save(transaction);
     }
 

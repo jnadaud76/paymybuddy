@@ -4,7 +4,6 @@ import com.paymybuddy.paymybuddy.dto.PersonConnectionDto;
 import com.paymybuddy.paymybuddy.dto.PersonFullDto;
 import com.paymybuddy.paymybuddy.model.Person;
 
-import java.util.Optional;
 import java.util.Set;
 
 public interface IPersonService {

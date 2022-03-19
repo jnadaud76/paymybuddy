@@ -26,8 +26,8 @@ public class Transaction {
     private LocalDateTime date;
 
     @ManyToOne
-    @JoinColumn (name = "recipiend", referencedColumnName = "ID", nullable = false)
-    private Person recipiend;
+    @JoinColumn (name = "recipient", referencedColumnName = "ID", nullable = false)
+    private Person recipient;
 
     @ManyToOne
     @JoinColumn(name = "sender", referencedColumnName = "ID", nullable = false)
@@ -58,12 +58,13 @@ public class Transaction {
         this.date = date;
     }
 
-    public Person getRecipiend() {
-        return recipiend;
+    public Person getRecipient() {
+        return recipient;
     }
 
-    public void setRecipiend(Person recipiend) {
-        this.recipiend = recipiend;
+
+    public void setRecipient(Person recipient) {
+        this.recipient = recipient;
     }
 
     public Person getSender() {
@@ -90,7 +91,7 @@ public class Transaction {
         this.description = description;
     }
 
-    public double getFeeAmount() {
+    public double getFeeAmount(double feeAmount) {
         return feeAmount;
     }
 
