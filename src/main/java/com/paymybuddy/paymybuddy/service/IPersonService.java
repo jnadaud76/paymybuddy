@@ -21,4 +21,6 @@ public interface IPersonService {
 
     void removeConnection (Integer personId, Integer connectionId);
 
+    boolean isConnectionOf (Integer personId, Integer connectionId);
+
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonService implements IPersonService {
@@ -28,10 +29,10 @@ public class PersonService implements IPersonService {
         return new BCryptPasswordEncoder();
     }*/
 
-    public Set<PersonFullDto> getPersons(){
+    public Set<PersonFullDto> getPersons() {
         Set<Person> persons = personRepository.findAll();
         Set<PersonFullDto> personFullDtoSet = new HashSet<>();
-        for (Person person : persons){
+        for (Person person : persons) {
             PersonFullDto personFullDto = conversionService.personToFullDto(person);
             personFullDtoSet.add(personFullDto);
         }
@@ -63,20 +64,20 @@ public class PersonService implements IPersonService {
         }
     }
 
-    public void addConnection (Integer personId, Integer connectionId){
+    public void addConnection(Integer personId, Integer connectionId) {
         Person person = personRepository.findById(personId).get();
         Person connection = personRepository.findById(connectionId).get();
         PersonConnectionDto personConnectionDto = conversionService.connectionToConnectionDto(connection);
         if (getConnectionsFromPerson(personId).contains(personConnectionDto)) {
             throw new IllegalArgumentException();
         } else {
-                person.getConnections().add(connection);
-                personRepository.save(person);
-            }
+            person.getConnections().add(connection);
+            personRepository.save(person);
         }
+    }
 
 
-    public void removeConnection (Integer personId, Integer connectionId) {
+    public void removeConnection(Integer personId, Integer connectionId) {
         Person person = personRepository.findById(personId).get();
         Person connection = personRepository.findById(connectionId).get();
         PersonConnectionDto personConnectionDto = conversionService.connectionToConnectionDto(connection);
@@ -89,13 +90,25 @@ public class PersonService implements IPersonService {
         }
     }
 
-    public Set<PersonConnectionDto> getConnectionsFromPerson (Integer personId){
+    public Set<PersonConnectionDto> getConnectionsFromPerson(Integer personId) {
         Person person = personRepository.findById(personId).get();
         Set<PersonConnectionDto> connectionDtoSet = new HashSet<>();
-        for (Person connection : person.getConnections()){
+        for (Person connection : person.getConnections()) {
             PersonConnectionDto personConnectionDto = conversionService.connectionToConnectionDto(connection);
             connectionDtoSet.add(personConnectionDto);
         }
         return connectionDtoSet;
     }
+
+    public boolean isConnectionOf(Integer personId, Integer connectionId) {
+        if (getConnectionsFromPerson(personId).stream()
+                .filter(personConnectionDto -> personConnectionDto
+                        .getPersonConnectionDtoId() == connectionId)
+                .collect(Collectors.toSet()).isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
+

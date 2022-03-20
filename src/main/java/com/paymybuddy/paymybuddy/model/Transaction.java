@@ -12,9 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.transaction.Transactional;
 
 @Entity
 @DynamicUpdate
+@Transactional
 @Table(name = "transaction")
 public class Transaction {
     @Id

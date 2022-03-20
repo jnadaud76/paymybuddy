@@ -55,18 +55,25 @@ public class ConversionService implements IConversionService {
         return personConnectionDto;
     }
 
-   public Transaction fullDtoToTransaction (final TransactionFullDto transactionFullDto){
-       Transaction transaction = new Transaction();
-       transaction.setDate(LocalDateTime.now());
-       transaction.setRecipient(personRepository.findById(transactionFullDto.getRecipient()).get());
-       transaction.setSender(personRepository.findById(transactionFullDto.getSender()).get());
-       transaction.setAmount(transactionFullDto.getAmount());
-       transaction.setDescription(transactionFullDto.getDescription());
-       transaction.setFeeAmount(transactionFullDto.getAmount()*feeRate);
-       return transaction;
+   public Transaction fullDtoToTransaction (final TransactionFullDto transactionFullDto) {
+           Transaction transaction = new Transaction();
+           transaction.setDate(LocalDateTime.now());
+           transaction.setRecipient(personRepository.findById(transactionFullDto.getRecipient()).get());
+           transaction.setSender(personRepository.findById(transactionFullDto.getSender()).get());
+           transaction.setAmount(transactionFullDto.getAmount());
+           transaction.setDescription(transactionFullDto.getDescription());
+           transaction.setFeeAmount(transactionFullDto.getAmount() * feeRate);
+           return transaction;
+
+   }
+
+    public TransactionFullDto transactionToFullDto (final Transaction transaction){
+    TransactionFullDto transactionFullDto = new TransactionFullDto();
+    transactionFullDto.setTransactionFullDtoId(transaction.getTransactionId());
+    transactionFullDto.setRecipient(transaction.getRecipient().getPersonId());
+    transactionFullDto.setSender(transaction.getSender().getPersonId());
+    transactionFullDto.setAmount(transaction.getAmount());
+    transactionFullDto.setDescription(transaction.getDescription());
+    return transactionFullDto;
     }
-
-    /*public TransactionFullDto transactionToFullDto (final Transaction transaction){
-
-    }*/
 }

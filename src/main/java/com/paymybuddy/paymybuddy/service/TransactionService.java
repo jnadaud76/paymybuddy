@@ -9,8 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionService implements ITransactionService {
@@ -22,24 +23,57 @@ public class TransactionService implements ITransactionService {
     private IConversionService conversionService;
 
     @Autowired
+    private IPersonService personService;
+
+    @Autowired
     private Calculator calculator;
 
 
-    public Set<Transaction> getTransactions(){
-        return transactionRepository.findAll();
+    public Set<TransactionFullDto> getTransactions() {
+        Set<Transaction> transactionSet = transactionRepository.findAll();
+        Set<TransactionFullDto> transactionFullDtoSet = new HashSet<>();
+        for (Transaction transaction : transactionSet) {
+            TransactionFullDto transactionFullDto = conversionService.transactionToFullDto(transaction);
+            transactionFullDtoSet.add(transactionFullDto);
+        }
+        return transactionFullDtoSet;
     }
 
-    public Optional<Transaction> getTransactionById(Integer id) {
-        return transactionRepository.findById(id);
-            }
+    public Set<TransactionFullDto> getTransactionsBySender(Integer senderId) {
+        return getTransactions().stream()
+                .filter(transactionFullDto -> transactionFullDto.getSender() == senderId)
+                .collect(Collectors.toSet());
+    }
+
+    public TransactionFullDto getTransactionById(Integer id) {
+        if (transactionRepository.existsById(id)) {
+            Transaction transaction = transactionRepository.findById(id).get();
+            return conversionService.transactionToFullDto(transaction);
+        } else {
+            return null;
+        }
+    }
 
     public Transaction addTransaction(TransactionFullDto transactionFullDto) {
-        Transaction transaction = conversionService.fullDtoToTransaction(transactionFullDto);
-        calculator.updateAmountAvailable(transactionFullDto.getRecipient(),transactionFullDto.getSender(), transactionFullDto.getAmount());
-        return transactionRepository.save(transaction);
+        if (personService.isConnectionOf(transactionFullDto.getSender(), transactionFullDto.getRecipient())) {
+            Transaction transaction = conversionService.fullDtoToTransaction(transactionFullDto);
+            calculator.updateAmountAvailable(transactionFullDto.getRecipient()
+                    , transactionFullDto.getSender()
+                    , transactionFullDto.getAmount());
+            return transactionRepository.save(transaction);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
+
     public void deleteTransactionById(Integer id) {
-        transactionRepository.deleteById(id);
+        if (transactionRepository.existsById(id)) {
+            transactionRepository.deleteById(id);
+        } else {
+            //LOGGER.error("Person doesn't exist in Set", new IllegalArgumentException());
+            throw new IllegalArgumentException();
+        }
+
     }
 }

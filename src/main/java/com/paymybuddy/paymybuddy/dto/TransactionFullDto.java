@@ -17,7 +17,7 @@ public class TransactionFullDto {
     private String description;
 
 
-    public int getTransactionFullDtoId() {
+   public int getTransactionFullDtoId() {
         return transactionFullDtoId;
     }
 

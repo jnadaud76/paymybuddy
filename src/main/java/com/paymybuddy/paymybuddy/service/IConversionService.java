@@ -16,5 +16,5 @@ public interface IConversionService {
 
     Transaction fullDtoToTransaction(final TransactionFullDto transactionFullDto);
 
-    /*TransactionFullDto transactionToFullDto (final Transaction transaction);*/
+    TransactionFullDto transactionToFullDto (final Transaction transaction);
 }

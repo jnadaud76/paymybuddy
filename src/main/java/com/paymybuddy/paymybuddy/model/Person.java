@@ -56,6 +56,12 @@ public class Person {
                             )
     private Set<Transaction> transactions = new HashSet<>();
 
+    /*@OneToMany(
+            mappedBy = "recipient",
+            cascade = CascadeType.PERSIST
+    )
+    private Set<Transaction> transactionsRecipient = new HashSet<>();*/
+
     @ManyToMany(
           fetch = FetchType.LAZY,
 
@@ -86,7 +92,7 @@ public class Person {
     )
     private Set<Person> connectionsOf = new HashSet<>();
 
-    public Person(){
+   /* public Person(){
 
     }
 
@@ -111,7 +117,7 @@ public class Person {
         this.iban = iban;
         this.amountAvailable = amountAvailable;
         this.connections = connections;
-    }
+    }*/
 
     public int getPersonId() {
         return personId;

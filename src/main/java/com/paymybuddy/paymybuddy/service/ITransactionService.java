@@ -8,11 +8,13 @@ import java.util.Set;
 
 public interface ITransactionService {
 
-    Set<Transaction> getTransactions();
+    Set<TransactionFullDto> getTransactions();
 
-    Optional<Transaction> getTransactionById(Integer id);
+    TransactionFullDto getTransactionById(Integer id);
 
     Transaction addTransaction(TransactionFullDto transactionFullDto);
 
     void deleteTransactionById(Integer id);
+
+    Set<TransactionFullDto> getTransactionsBySender(Integer senderId);
 }
