@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
 
+import javax.validation.Valid;
+
 @RestController
 public class PersonController {
 
@@ -48,7 +50,7 @@ public class PersonController {
     }
 
     @PostMapping(value = "/person")
-    public ResponseEntity<String> createPerson(@RequestBody final PersonFullDto personFullDto) {
+    public ResponseEntity<String> createPerson(@Valid @RequestBody final PersonFullDto personFullDto) {
         try {
             personService.addPerson(personFullDto);
             LOGGER.info("Person successfully created - code : {}", HttpStatus.CREATED);

@@ -3,6 +3,8 @@ package com.paymybuddy.paymybuddy.model;
 
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
 import java.util.HashSet;
 
@@ -21,6 +23,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.transaction.Transactional;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @DynamicUpdate
@@ -32,21 +36,29 @@ public class Person {
     @Column(name = "ID")
     private int personId;
 
+    @Length(max=100)
     @Column(name = "FIRSTNAME", nullable = false, length=100)
     private String firstName;
 
+    @Length(max=100)
     @Column(name = "LASTNAME", nullable = false, length=100)
     private String lastName;
 
+    @Length(max=100)
+    @Email
     @Column(name = "EMAIL", unique = true, nullable = false, length=100)
     private String email;
 
+    @Pattern(regexp="(?=.{8,20}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W).*$")
+    @Length(min=8,max=20)
     @Column(name = "PASSWORD", nullable = false, length=100)
     private String password;
 
+    @Length(min=27,max=34)
     @Column(name = "IBAN", nullable = false, length=34)
     private String iban;
 
+    @Range(min=0, max=999999)
     @Column(name = "AMOUNT_AVAILABLE",nullable = false, precision = 8, scale=2)
     private double amountAvailable;
 

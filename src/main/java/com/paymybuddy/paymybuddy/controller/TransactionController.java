@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
 
+import javax.validation.Valid;
+
 @RestController
 public class TransactionController {
 
@@ -56,7 +58,7 @@ public class TransactionController {
     }
 
     @PostMapping(value = "/transaction")
-    public ResponseEntity<String> createTransaction(@RequestBody final TransactionFullDto transactionFullDto) {
+    public ResponseEntity<String> createTransaction(@Valid @RequestBody final TransactionFullDto transactionFullDto) {
         try {
             transactionService.addTransaction(transactionFullDto);
             LOGGER.info("Transaction successfully created - code : {}", HttpStatus.CREATED);

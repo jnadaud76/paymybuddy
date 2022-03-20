@@ -1,6 +1,8 @@
 package com.paymybuddy.paymybuddy.model;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDateTime;
 
@@ -35,12 +37,15 @@ public class Transaction {
     @JoinColumn(name = "sender", referencedColumnName = "ID", nullable = false)
     private Person sender;
 
+    @Range(min=0, max=1000)
     @Column(name = "AMOUNT", nullable = false)
     private int amount;
 
+    @Length (max=100)
     @Column(name = "DESCRIPTION" , length=100)
     private String description;
 
+    @Range(min=0, max=200)
     @Column(name = "FEE_AMOUNT", nullable = false, precision = 5, scale=2)
     private double feeAmount;
 
