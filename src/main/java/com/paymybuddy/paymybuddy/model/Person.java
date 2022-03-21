@@ -68,11 +68,11 @@ public class Person {
                             )
     private Set<Transaction> transactions = new HashSet<>();
 
-    /*@OneToMany(
+    @OneToMany(
             mappedBy = "recipient",
             cascade = CascadeType.PERSIST
     )
-    private Set<Transaction> transactionsRecipient = new HashSet<>();*/
+    private Set<Transaction> transactionsRecipient = new HashSet<>();
 
     @ManyToMany(
           fetch = FetchType.LAZY,

@@ -67,7 +67,7 @@ public class TransactionController {
         } catch (Exception e) {
             LOGGER.error("Transaction can't be create - code : {}", HttpStatus.BAD_REQUEST, e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Transaction can't be create. May already exist or your balance is insufficient.");
+                    .body("Transaction can't be create. May already exist or your balance is insufficient or recipient is not one of your connection.");
         }
 
     }

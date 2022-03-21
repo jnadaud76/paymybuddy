@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -76,6 +77,30 @@ public class PersonController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Connection can't be added. May already exist");
         }
+
+    }
+
+    @PatchMapping (value="/toiban")
+    public ResponseEntity<String> toIban (@RequestParam final Integer personId, @RequestParam final Integer amount) {
+        try {
+            personService.toIbanTransfer(personId, amount);
+            LOGGER.info("Transfer completed successfully - code : {}", HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body("Transfer completed successfully.");
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("Transfer failed - code : {}", HttpStatus.BAD_REQUEST, e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Transfer failed. Please check that your balance is sufficient.");
+        }
+
+    }
+
+    @PatchMapping (value="/fromiban")
+    public ResponseEntity<String> fromIban (@RequestParam final Integer personId, @RequestParam final Integer amount) {
+            personService.fromIbanTransfer(personId, amount);
+            LOGGER.info("Transfer completed successfully - code : {}", HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body("Transfer completed successfully.");
 
     }
 

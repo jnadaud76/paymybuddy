@@ -3,7 +3,7 @@ package com.paymybuddy.paymybuddy.service;
 import com.paymybuddy.paymybuddy.dto.TransactionFullDto;
 import com.paymybuddy.paymybuddy.model.Transaction;
 
-import java.util.Optional;
+
 import java.util.Set;
 
 public interface ITransactionService {
@@ -17,4 +17,6 @@ public interface ITransactionService {
     void deleteTransactionById(Integer id);
 
     Set<TransactionFullDto> getTransactionsBySender(Integer senderId);
+
+
 }

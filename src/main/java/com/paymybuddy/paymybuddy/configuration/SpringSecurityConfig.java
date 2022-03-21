@@ -32,6 +32,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .httpBasic();
     }
+@Bean
+public UserDatailsService userDetailsService(){
+
+ return new USerDetailsServiceImpl();
+}
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

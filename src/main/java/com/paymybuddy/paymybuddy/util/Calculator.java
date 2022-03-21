@@ -22,4 +22,20 @@ public class Calculator {
             throw new IllegalArgumentException();
         }
     }
+        public void updateAmountToIban (Integer personId, Integer amount) {
+            Person person = personRepository.findById(personId).get();
+            if (person.getAmountAvailable() >= amount) {
+                person.setAmountAvailable(person.getAmountAvailable() - amount);
+            } else {
+                throw new IllegalArgumentException();
+            }
+
+        }
+
+    public void updateAmountFromIban (Integer personId, Integer amount) {
+        Person person = personRepository.findById(personId).get();
+        person.setAmountAvailable(person.getAmountAvailable() + amount);
+
+    }
+
 }

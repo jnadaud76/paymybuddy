@@ -1,4 +1,4 @@
-package com.paymybuddy.paymybuddy.service;
+package com.paymybuddy.paymybuddy.util;
 
 import com.paymybuddy.paymybuddy.dto.PersonConnectionDto;
 import com.paymybuddy.paymybuddy.dto.PersonFullDto;

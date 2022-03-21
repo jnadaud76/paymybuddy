@@ -6,6 +6,8 @@ import com.paymybuddy.paymybuddy.dto.PersonFullDto;
 import com.paymybuddy.paymybuddy.model.Person;
 
 import com.paymybuddy.paymybuddy.repository.PersonRepository;
+import com.paymybuddy.paymybuddy.util.Calculator;
+import com.paymybuddy.paymybuddy.util.IConversionService;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class PersonService implements IPersonService {
 
     @Autowired
     private IConversionService conversionService;
+
+    @Autowired
+    private Calculator calculator;
 
     /*public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -100,15 +105,21 @@ public class PersonService implements IPersonService {
         return connectionDtoSet;
     }
 
+    public void toIbanTransfer(Integer personId, Integer amount) {
+    calculator.updateAmountToIban(personId,amount);
+    personRepository.save(personRepository.findById(personId).get());
+    }
+
+    public void fromIbanTransfer(Integer personId, Integer amount){
+    calculator.updateAmountFromIban(personId, amount);
+        personRepository.save(personRepository.findById(personId).get());
+    }
+
     public boolean isConnectionOf(Integer personId, Integer connectionId) {
-        if (getConnectionsFromPerson(personId).stream()
+        return !getConnectionsFromPerson(personId).stream()
                 .filter(personConnectionDto -> personConnectionDto
                         .getPersonConnectionDtoId() == connectionId)
-                .collect(Collectors.toSet()).isEmpty()) {
-            return false;
-        } else {
-            return true;
-        }
+                .collect(Collectors.toSet()).isEmpty();
     }
 }
 

@@ -23,4 +23,8 @@ public interface IPersonService {
 
     boolean isConnectionOf (Integer personId, Integer connectionId);
 
+    void toIbanTransfer(Integer personID, Integer amount);
+
+    void fromIbanTransfer(Integer personID, Integer amount);
+
 }
