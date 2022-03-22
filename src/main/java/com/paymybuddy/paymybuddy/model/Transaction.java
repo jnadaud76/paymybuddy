@@ -18,7 +18,6 @@ import javax.transaction.Transactional;
 
 @Entity
 @DynamicUpdate
-@Transactional
 @Table(name = "transaction")
 public class Transaction {
     @Id

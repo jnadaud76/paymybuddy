@@ -19,6 +19,10 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api("API for transaction CRUD operations.")
 @RestController
 public class TransactionController {
 
@@ -27,12 +31,14 @@ public class TransactionController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransactionController.class);
 
+    @ApiOperation(value = "Retrieve all transactions.")
     @GetMapping("/transactions")
     public Iterable<TransactionFullDto> getTransactions() {
         LOGGER.info("Transactions successfully found - code : {}", HttpStatus.OK);
         return transactionService.getTransactions();
     }
 
+    @ApiOperation(value = "Retrieves all transactions issued by a user.")
     @GetMapping("/sender/transactions")
     public ResponseEntity<Set<TransactionFullDto>> getTransactionsBySender(@RequestParam final Integer senderId) {
         if (!(transactionService.getTransactionsBySender(senderId).isEmpty())) {
@@ -44,6 +50,7 @@ public class TransactionController {
         }
     }
 
+    @ApiOperation(value = "Retrieve one transaction by id.")
     @GetMapping(value = "/transaction")
     public ResponseEntity<TransactionFullDto>
     getTransactionById(@RequestParam final Integer transactionId) {
@@ -57,6 +64,7 @@ public class TransactionController {
         }
     }
 
+    @ApiOperation(value = "Create one transaction.")
     @PostMapping(value = "/transaction")
     public ResponseEntity<String> createTransaction(@Valid @RequestBody final TransactionFullDto transactionFullDto) {
         try {
@@ -72,6 +80,7 @@ public class TransactionController {
 
     }
 
+    @ApiOperation(value = "Delete one transaction.")
     @DeleteMapping(value = "/transaction")
     public ResponseEntity<String>
     deleteTransaction(@RequestParam final Integer transactionId) {

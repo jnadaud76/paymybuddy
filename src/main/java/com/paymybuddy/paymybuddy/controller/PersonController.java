@@ -23,6 +23,10 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api("API for people CRUD operations.")
 @RestController
 public class PersonController {
 
@@ -31,12 +35,14 @@ public class PersonController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PersonController.class);
 
+    @ApiOperation(value = "Retrieve all user.")
     @GetMapping("/persons")
     public Iterable<PersonFullDto> getPersons() {
         LOGGER.info("Persons successfully found - code : {}", HttpStatus.OK);
         return personService.getPersons();
     }
 
+    @ApiOperation(value = "Retrieve one user by id.")
     @GetMapping(value = "/person")
     public ResponseEntity<PersonFullDto>
     getPersonById (@RequestParam final Integer personId) {
@@ -50,6 +56,7 @@ public class PersonController {
         }
     }
 
+    @ApiOperation(value = "Create one user.")
     @PostMapping(value = "/person")
     public ResponseEntity<String> createPerson(@Valid @RequestBody final PersonFullDto personFullDto) {
         try {
@@ -65,6 +72,7 @@ public class PersonController {
 
     }
 
+    @ApiOperation(value = "Add a connection to user.")
     @PutMapping (value = "person/connection/add")
     public ResponseEntity<String> addConnection(@RequestParam final Integer personId, @RequestParam final Integer connectionId) {
         try {
@@ -80,30 +88,7 @@ public class PersonController {
 
     }
 
-    @PatchMapping (value="/toiban")
-    public ResponseEntity<String> toIban (@RequestParam final Integer personId, @RequestParam final Integer amount) {
-        try {
-            personService.toIbanTransfer(personId, amount);
-            LOGGER.info("Transfer completed successfully - code : {}", HttpStatus.OK);
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body("Transfer completed successfully.");
-        } catch (IllegalArgumentException e) {
-            LOGGER.error("Transfer failed - code : {}", HttpStatus.BAD_REQUEST, e);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Transfer failed. Please check that your balance is sufficient.");
-        }
-
-    }
-
-    @PatchMapping (value="/fromiban")
-    public ResponseEntity<String> fromIban (@RequestParam final Integer personId, @RequestParam final Integer amount) {
-            personService.fromIbanTransfer(personId, amount);
-            LOGGER.info("Transfer completed successfully - code : {}", HttpStatus.OK);
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body("Transfer completed successfully.");
-
-    }
-
+    @ApiOperation(value = "Remove a connection from user.")
     @PutMapping(value = "person/connection/remove")
     public ResponseEntity<String> removeConnection(@RequestParam final Integer personId, @RequestParam final Integer connectionId) {
         try {
@@ -119,11 +104,39 @@ public class PersonController {
 
     }
 
+    @ApiOperation(value = "Transfers money from user's application account to the user's bank account.")
+    @PatchMapping (value="/toiban")
+    public ResponseEntity<String> toIban (@RequestParam final Integer personId, @RequestParam final Integer amount) {
+        try {
+            personService.toIbanTransfer(personId, amount);
+            LOGGER.info("Transfer completed successfully - code : {}", HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body("Transfer completed successfully.");
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("Transfer failed - code : {}", HttpStatus.BAD_REQUEST, e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Transfer failed. Please check that your balance is sufficient.");
+        }
+
+    }
+
+    @ApiOperation(value = "Transfers money from user's bank account to user's application account.")
+    @PatchMapping (value="/fromiban")
+    public ResponseEntity<String> fromIban (@RequestParam final Integer personId, @RequestParam final Integer amount) {
+            personService.fromIbanTransfer(personId, amount);
+            LOGGER.info("Transfer completed successfully - code : {}", HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body("Transfer completed successfully.");
+
+    }
+
+    @ApiOperation(value = "Retrieve all user's connections by user's id.")
     @GetMapping (value = "/connections")
     public Set<PersonConnectionDto> getConnectionFromPerson(@RequestParam final Integer personId){
         return personService.getConnectionsFromPerson(personId);
     }
 
+    @ApiOperation(value = "Remove a user.")
     @DeleteMapping(value = "/person")
     public ResponseEntity<String>
     deletePerson(@RequestParam final Integer personId) {

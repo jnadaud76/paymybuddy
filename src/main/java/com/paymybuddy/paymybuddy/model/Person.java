@@ -28,7 +28,6 @@ import javax.validation.constraints.Pattern;
 
 @Entity
 @DynamicUpdate
-@Transactional
 @Table(name = "person")
 public class Person {
     @Id

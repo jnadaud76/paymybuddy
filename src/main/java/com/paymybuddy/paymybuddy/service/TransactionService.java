@@ -14,7 +14,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public class TransactionService implements ITransactionService {
 
     @Autowired
