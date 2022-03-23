@@ -6,7 +6,7 @@ import com.paymybuddy.paymybuddy.dto.TransactionFullDto;
 import com.paymybuddy.paymybuddy.model.Person;
 import com.paymybuddy.paymybuddy.model.Transaction;
 
-public interface IConversionService {
+public interface IConversion {
 
     PersonFullDto personToFullDto(final Person person);
 

@@ -1,11 +1,67 @@
 package com.paymybuddy.paymybuddy.controller;
 
 
+import com.paymybuddy.paymybuddy.service.MyUserDetailsService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import javax.annotation.security.RolesAllowed;
+import java.security.Principal;
+import java.util.Base64;
+
+import javax.servlet.http.HttpServletRequest;
+
+@RestController
+@CrossOrigin(origins = "http://localhost:4200")
+public class UserController {
+
+    @Autowired
+    MyUserDetailsService myUserDetailsService;
+
+    @RequestMapping("/login")
+    public boolean login(@RequestBody User user) {
+        try {
+            UserDetails userDetails = myUserDetailsService.loadUserByUsername(user.getUsername());
+            return user.getUsername().equals(userDetails.getUsername()) && user.getPassword().equals(userDetails.getPassword());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @RequestMapping("/user")
+    public Principal user(HttpServletRequest request) {
+        String authToken = request.getHeader("Authorization")
+                .substring("Basic".length()).trim();
+        return () ->  new String(Base64.getDecoder()
+                .decode(authToken)).split(":")[0];
+    }
+}
+    /*@RequestMapping("/user")
+    public String getUser() {
+        return "Welcome User";
+    }*/
+
+    /*@RequestMapping("/user")
+    public Principal user(Principal user) {
+        return user;
+    }*/
+
+   /* @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String loginPage(Model model) {
+
+        return "http://localhost:4200/login";
+    }*/
+
 /*
 @RestController
 public class LoginController {
@@ -13,7 +69,7 @@ public class LoginController {
     @RolesAllowed("USER")
     @RequestMapping("/user")
     public String getUser() {
-        return "Welcome User";
+        ;
     }
 
     @RolesAllowed({"USER","ADMIN"})

@@ -7,10 +7,12 @@ import com.paymybuddy.paymybuddy.model.Person;
 
 import com.paymybuddy.paymybuddy.repository.PersonRepository;
 import com.paymybuddy.paymybuddy.util.Calculator;
-import com.paymybuddy.paymybuddy.util.IConversionService;
+import com.paymybuddy.paymybuddy.util.IConversion;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -28,14 +30,14 @@ public class PersonService implements IPersonService {
     private PersonRepository personRepository;
 
     @Autowired
-    private IConversionService conversionService;
+    private IConversion conversionService;
 
     @Autowired
     private Calculator calculator;
 
-    /*public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }*/
+    }
 
     public Set<PersonFullDto> getPersons() {
         Set<Person> persons = personRepository.findAll();
@@ -57,9 +59,8 @@ public class PersonService implements IPersonService {
     }
 
     public Person addPerson(PersonFullDto personFullDto) {
-        /*Person person1 = new Person();
-        person1.setPassword(passwordEncoder().encode(person.getPassword()));*/
         Person person = conversionService.fullDtoToPerson(personFullDto);
+        person.setPassword(passwordEncoder().encode(person.getPassword()));
         return personRepository.save(person);
     }
 

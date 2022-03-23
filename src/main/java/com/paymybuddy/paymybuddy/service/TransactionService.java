@@ -4,7 +4,7 @@ import com.paymybuddy.paymybuddy.dto.TransactionFullDto;
 import com.paymybuddy.paymybuddy.model.Transaction;
 import com.paymybuddy.paymybuddy.repository.TransactionRepository;
 import com.paymybuddy.paymybuddy.util.Calculator;
-import com.paymybuddy.paymybuddy.util.IConversionService;
+import com.paymybuddy.paymybuddy.util.IConversion;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,7 +24,7 @@ public class TransactionService implements ITransactionService {
     private TransactionRepository transactionRepository;
 
     @Autowired
-    private IConversionService conversionService;
+    private IConversion conversionService;
 
     @Autowired
     private IPersonService personService;

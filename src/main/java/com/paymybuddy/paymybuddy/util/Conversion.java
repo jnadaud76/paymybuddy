@@ -9,12 +9,13 @@ import com.paymybuddy.paymybuddy.repository.PersonRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-@Service
-public class ConversionService implements IConversionService {
+@Component
+public class Conversion implements IConversion {
 
     @Autowired
     PersonRepository personRepository;
