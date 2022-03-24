@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.security.RolesAllowed;
 /*
 @RestController
+@CrossOrigin (origins = "http://localhost:4200")
 public class LoginController {
 
     @RolesAllowed("USER")

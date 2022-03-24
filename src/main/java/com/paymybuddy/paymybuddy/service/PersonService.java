@@ -7,7 +7,7 @@ import com.paymybuddy.paymybuddy.model.Person;
 
 import com.paymybuddy.paymybuddy.repository.PersonRepository;
 import com.paymybuddy.paymybuddy.util.Calculator;
-import com.paymybuddy.paymybuddy.util.IConversionService;
+import com.paymybuddy.paymybuddy.util.IConversion;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class PersonService implements IPersonService {
     private PersonRepository personRepository;
 
     @Autowired
-    private IConversionService conversionService;
+    private IConversion conversionService;
 
     @Autowired
     private Calculator calculator;
