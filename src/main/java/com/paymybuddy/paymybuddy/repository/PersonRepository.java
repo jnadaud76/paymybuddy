@@ -14,6 +14,7 @@ public interface PersonRepository extends CrudRepository<Person, Integer> {
 @Override
 Set<Person> findAll();
 
-Person findByEmail(String personEmail);
+Person findByEmail(String email);
+
 
 }

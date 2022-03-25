@@ -27,4 +27,6 @@ public interface IPersonService {
 
     void fromIbanTransfer(Integer personID, Integer amount);
 
+    PersonFullDto getPersonByEmail (String email);
+
 }

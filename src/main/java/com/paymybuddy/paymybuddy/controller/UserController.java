@@ -1,51 +1,84 @@
 package com.paymybuddy.paymybuddy.controller;
 
 
+import com.paymybuddy.paymybuddy.dto.PersonLoginDto;
 import com.paymybuddy.paymybuddy.service.MyUserDetailsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.ui.Model;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 
 import java.security.Principal;
-import java.util.Base64;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class UserController {
 
-    @Autowired
-    MyUserDetailsService myUserDetailsService;
 
-    @RequestMapping("/login")
-    public boolean login(@RequestBody User user) {
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Autowired
+    private MyUserDetailsService myUserDetailsService;
+
+   /* @PostMapping("/login")
+    public boolean login(@RequestBody PersonLoginDto user) {
+        //String encodedPassword = passwordEncoder().encode(user.getPassword());
         try {
-            UserDetails userDetails = myUserDetailsService.loadUserByUsername(user.getUsername());
-            return user.getUsername().equals(userDetails.getUsername()) && user.getPassword().equals(userDetails.getPassword());
+          UserDetails userDetails = myUserDetailsService.loadUserByUsername(user.getEmail());
+          return user.getEmail().equals(userDetails.getUsername()) && user.getPassword().equals(userDetails.getPassword());
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+
+        }*/
+
+    @PostMapping("/login")
+    public ResponseEntity<User> login(@RequestBody PersonLoginDto user) {
+        //String encodedPassword = passwordEncoder().encode(user.getPassword());
+
+            User userDetails = (User) myUserDetailsService.loadUserByUsername(user.getEmail());
+            if (user.getEmail().equals(userDetails.getUsername())
+                    && user.getPassword().equals(userDetails.getPassword())) {
+                return new ResponseEntity<>(userDetails, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+
     }
 
-    @RequestMapping("/user")
+
+    @GetMapping("/user")
+    public Principal user (Principal user) {
+        return user;
+    }
+}
+
+    /*@RequestMapping("/user")
     public Principal user(HttpServletRequest request) {
         String authToken = request.getHeader("Authorization")
                 .substring("Basic".length()).trim();
         return () ->  new String(Base64.getDecoder()
                 .decode(authToken)).split(":")[0];
     }
-}
+}*/
     /*@RequestMapping("/user")
     public String getUser() {
         return "Welcome User";

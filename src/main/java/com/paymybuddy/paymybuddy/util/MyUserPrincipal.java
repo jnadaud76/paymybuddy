@@ -4,9 +4,10 @@ import com.paymybuddy.paymybuddy.model.Person;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-
+/*
 public class MyUserPrincipal implements UserDetails {
 
     private Person user;
@@ -51,3 +52,4 @@ public class MyUserPrincipal implements UserDetails {
         return true;
     }
 }
+*/

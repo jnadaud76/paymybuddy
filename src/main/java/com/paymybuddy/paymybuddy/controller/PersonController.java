@@ -44,6 +44,14 @@ public class PersonController {
         return personService.getPersons();
     }
 
+    @GetMapping(value ="/email")
+    public ResponseEntity<PersonFullDto>
+    getPersonByEmail (@RequestParam final String email) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(personService.getPersonByEmail(email));
+
+    }
+
     @ApiOperation(value = "Retrieve one user by id.")
     @GetMapping(value = "/person")
     public ResponseEntity<PersonFullDto>

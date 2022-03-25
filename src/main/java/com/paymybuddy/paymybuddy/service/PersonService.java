@@ -49,6 +49,11 @@ public class PersonService implements IPersonService {
         return personFullDtoSet;
     }
 
+    public PersonFullDto getPersonByEmail (String email){
+        Person person= personRepository.findByEmail(email);
+        return conversionService.personToFullDto(person);
+    }
+
     public PersonFullDto getPersonById(Integer id) {
         if (personRepository.existsById(id)) {
             Person person = personRepository.findById(id).get();
