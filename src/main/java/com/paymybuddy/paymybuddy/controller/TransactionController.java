@@ -1,6 +1,7 @@
 package com.paymybuddy.paymybuddy.controller;
 
 import com.paymybuddy.paymybuddy.dto.TransactionFullDto;
+import com.paymybuddy.paymybuddy.dto.TransactionLightDto;
 import com.paymybuddy.paymybuddy.service.ITransactionService;
 
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +27,7 @@ import io.swagger.annotations.ApiOperation;
 
 @Api("API for transaction CRUD operations.")
 @RestController
+//@RequestMapping(value ="api/")
 @CrossOrigin(origins = "http://localhost:4200")
 public class TransactionController {
 
@@ -41,11 +44,11 @@ public class TransactionController {
     }
 
     @ApiOperation(value = "Retrieves all transactions issued by a user.")
-    @GetMapping("/sender/transactions")
-    public ResponseEntity<Set<TransactionFullDto>> getTransactionsBySender(@RequestParam final Integer senderId) {
-        if (!(transactionService.getTransactionsBySender(senderId).isEmpty())) {
+    @GetMapping("/transactions/sender")
+    public ResponseEntity<Set<TransactionLightDto>> findTransactionsBySenderId(@RequestParam final Integer senderId) {
+        if (!(transactionService.findTransactionsBySenderId(senderId).isEmpty())) {
             LOGGER.info("Transactions successfully found - code : {}", HttpStatus.OK);
-            return ResponseEntity.status(HttpStatus.OK).body(transactionService.getTransactionsBySender(senderId));
+            return ResponseEntity.status(HttpStatus.OK).body(transactionService.findTransactionsBySenderId(senderId));
         } else {
             LOGGER.error("Transactions not founded - code : {}", HttpStatus.NOT_FOUND);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

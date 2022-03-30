@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.transaction.Transactional;
 
 @Entity
 @DynamicUpdate
@@ -23,7 +22,7 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private int transactionId;
+    private int id;
 
     @Column(name = "DATE", nullable = false)
     private LocalDateTime date;
@@ -48,12 +47,12 @@ public class Transaction {
     @Column(name = "FEE_AMOUNT", nullable = false, precision = 5, scale=2)
     private double feeAmount;
 
-    public int getTransactionId() {
-        return transactionId;
+    public int getId() {
+        return id;
     }
 
-    public void setTransactionId(int transactionId) {
-        this.transactionId = transactionId;
+    public void setId(int transactionId) {
+        this.id = transactionId;
     }
 
     public LocalDateTime getDate() {

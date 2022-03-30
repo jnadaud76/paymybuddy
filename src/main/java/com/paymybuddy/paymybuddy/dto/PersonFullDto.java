@@ -3,7 +3,7 @@ package com.paymybuddy.paymybuddy.dto;
 public class PersonFullDto {
 
 
-    private int personFullDtoId;
+    private int id;
 
 
     private String firstName;
@@ -23,12 +23,12 @@ public class PersonFullDto {
 
     private double amountAvailable;
 
-    public int getPersonFullDtoId() {
-        return personFullDtoId;
+    public int getId() {
+        return id;
     }
 
-    public void setPersonFullDtoId(int personFullDtoId) {
-        this.personFullDtoId = personFullDtoId;
+    public void setId(int Id) {
+        this.id = Id;
     }
 
     public String getFirstName() {

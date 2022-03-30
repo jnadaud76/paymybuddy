@@ -1,6 +1,7 @@
 package com.paymybuddy.paymybuddy.service;
 
 import com.paymybuddy.paymybuddy.dto.TransactionFullDto;
+import com.paymybuddy.paymybuddy.dto.TransactionLightDto;
 import com.paymybuddy.paymybuddy.model.Transaction;
 import com.paymybuddy.paymybuddy.repository.TransactionRepository;
 import com.paymybuddy.paymybuddy.util.Calculator;
@@ -43,12 +44,24 @@ public class TransactionService implements ITransactionService {
         return transactionFullDtoSet;
     }
 
-    public Set<TransactionFullDto> getTransactionsBySender(Integer senderId) {
-        return getTransactions().stream()
+    public Set<TransactionLightDto> findTransactionsBySenderId(Integer senderId) {
+        Set<TransactionLightDto> transactionLightDtoSet = new HashSet<>();
+        Set<TransactionFullDto> transactionFullDtoSet = getTransactions().stream()
                 .filter(transactionFullDto -> transactionFullDto.getSender() == senderId)
                 .collect(Collectors.toSet());
-    }
+         for (TransactionFullDto t : transactionFullDtoSet){
+             TransactionLightDto transactionLightDto = new TransactionLightDto();
+             transactionLightDto.setId(t.getId());
+             transactionLightDto.setRecipient(personService.getPersonById(t.getRecipient()).getLastName()
+             );
+             transactionLightDto.setAmount(t.getAmount());
+             transactionLightDto.setDescription(t.getDescription());
+             transactionLightDtoSet.add(transactionLightDto);
 
+
+         }
+         return transactionLightDtoSet;
+    }
     public TransactionFullDto getTransactionById(Integer id) {
         if (transactionRepository.existsById(id)) {
             Transaction transaction = transactionRepository.findById(id).get();

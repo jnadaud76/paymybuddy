@@ -1,14 +1,11 @@
 package com.paymybuddy.paymybuddy.dto;
 
-public class TransactionFullDto {
+public class TransactionLightDto {
 
     private int id;
 
 
-    private int recipient;
-
-
-    private int sender;
+    private String recipient;
 
 
     private int amount;
@@ -17,7 +14,7 @@ public class TransactionFullDto {
     private String description;
 
 
-   public int getId() {
+    public int getId() {
         return id;
     }
 
@@ -25,20 +22,12 @@ public class TransactionFullDto {
         this.id = id;
     }
 
-    public int getRecipient() {
+    public String getRecipient() {
         return recipient;
     }
 
-    public void setRecipient(int recipient) {
+    public void setRecipient(String recipient) {
         this.recipient = recipient;
-    }
-
-    public int getSender() {
-        return sender;
-    }
-
-    public void setSender(int sender) {
-        this.sender = sender;
     }
 
     public int getAmount() {
@@ -56,6 +45,4 @@ public class TransactionFullDto {
     public void setDescription(String description) {
         this.description = description;
     }
-
-
 }

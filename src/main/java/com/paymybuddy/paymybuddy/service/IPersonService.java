@@ -2,6 +2,7 @@ package com.paymybuddy.paymybuddy.service;
 
 import com.paymybuddy.paymybuddy.dto.PersonConnectionDto;
 import com.paymybuddy.paymybuddy.dto.PersonFullDto;
+import com.paymybuddy.paymybuddy.dto.PersonMailDto;
 import com.paymybuddy.paymybuddy.model.Person;
 
 import java.util.Set;
@@ -28,5 +29,7 @@ public interface IPersonService {
     void fromIbanTransfer(Integer personID, Integer amount);
 
     PersonFullDto getPersonByEmail (String email);
+
+    Set<PersonMailDto> getPossibleConnection (Integer personId);
 
 }

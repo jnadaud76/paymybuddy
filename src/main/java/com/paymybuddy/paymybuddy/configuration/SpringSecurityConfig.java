@@ -58,12 +58,17 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         //http.cors().and().csrf().disable()
-        http.cors().and().csrf().disable()
+        http.cors().disable();
+        http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/*", "/registration").permitAll()
+                //.antMatchers("/registration", "/person**", "/transactions**", "transactions/**").permitAll()
+                .antMatchers("/**").permitAll()
+                //.fullyAuthenticated()
+                //.and()
+                //.httpBasic()
                 //.antMatchers("/login", "/person**", "/registration", "/email").permitAll()
-                .anyRequest()
-                .authenticated()
+                //.anyRequest()
+                //.authenticated()
                 //.and().formLogin()
                 //.loginPage("/login")
                 //.and()

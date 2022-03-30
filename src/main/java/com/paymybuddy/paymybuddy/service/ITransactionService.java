@@ -1,6 +1,7 @@
 package com.paymybuddy.paymybuddy.service;
 
 import com.paymybuddy.paymybuddy.dto.TransactionFullDto;
+import com.paymybuddy.paymybuddy.dto.TransactionLightDto;
 import com.paymybuddy.paymybuddy.model.Transaction;
 
 
@@ -16,7 +17,7 @@ public interface ITransactionService {
 
     void deleteTransactionById(Integer id);
 
-    Set<TransactionFullDto> getTransactionsBySender(Integer senderId);
+    Set<TransactionLightDto> findTransactionsBySenderId(Integer senderId);
 
 
 }

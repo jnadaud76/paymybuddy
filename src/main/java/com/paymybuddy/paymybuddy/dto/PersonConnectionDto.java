@@ -4,11 +4,10 @@ import java.util.Objects;
 
 public class PersonConnectionDto {
 
-    private int personConnectionDtoId;
+    private int id;
 
 
     private String firstName;
-
 
     private String lastName;
 
@@ -18,12 +17,12 @@ public class PersonConnectionDto {
 
     private double amountAvailable;
 
-    public int getPersonConnectionDtoId() {
-        return personConnectionDtoId;
+    public int getId() {
+        return id;
     }
 
-    public void setPersonConnectionDtoId(int personConnectionDtoId) {
-        this.personConnectionDtoId = personConnectionDtoId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -63,11 +62,11 @@ public class PersonConnectionDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PersonConnectionDto that = (PersonConnectionDto) o;
-        return personConnectionDtoId == that.personConnectionDtoId && Double.compare(that.amountAvailable, amountAvailable) == 0 && firstName.equals(that.firstName) && lastName.equals(that.lastName) && email.equals(that.email);
+        return id == that.id && Double.compare(that.amountAvailable, amountAvailable) == 0 && firstName.equals(that.firstName) && lastName.equals(that.lastName) && email.equals(that.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(personConnectionDtoId, firstName, lastName, email, amountAvailable);
+        return Objects.hash(id, firstName, lastName, email, amountAvailable);
     }
 }

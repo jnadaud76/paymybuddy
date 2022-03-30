@@ -2,9 +2,11 @@ package com.paymybuddy.paymybuddy.service;
 
 import com.paymybuddy.paymybuddy.model.Person;
 import com.paymybuddy.paymybuddy.repository.PersonRepository;
+import com.paymybuddy.paymybuddy.util.MyUserPrincipal;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,9 +24,11 @@ public class MyUserDetailsService implements UserDetailsService {
         if (person == null) {
             throw new UsernameNotFoundException(username);
         } else {
-            return User.withUsername(person.getEmail())
+            /*return User.withUsername(person.getEmail())
                     .password(person.getPassword())
-                    .authorities("USER").build();
+                    .authorities("USER").build();*/
+            return new MyUserPrincipal(person);
+            //return person;
         }
     }
 }

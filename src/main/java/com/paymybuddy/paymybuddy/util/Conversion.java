@@ -10,7 +10,6 @@ import com.paymybuddy.paymybuddy.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
@@ -25,7 +24,7 @@ public class Conversion implements IConversion {
 
     public PersonFullDto personToFullDto(final Person person) {
         PersonFullDto personFullDto = new PersonFullDto();
-        personFullDto.setPersonFullDtoId(person.getPersonId());
+        personFullDto.setId(person.getId());
         personFullDto.setFirstName(person.getFirstName());
         personFullDto.setLastName(person.getLastName());
         personFullDto.setEmail(person.getEmail());
@@ -48,7 +47,7 @@ public class Conversion implements IConversion {
 
     public PersonConnectionDto connectionToConnectionDto (final Person connection) {
         PersonConnectionDto personConnectionDto = new PersonConnectionDto();
-        personConnectionDto.setPersonConnectionDtoId(connection.getPersonId());
+        personConnectionDto.setId(connection.getId());
         personConnectionDto.setFirstName(connection.getFirstName());
         personConnectionDto.setLastName(connection.getLastName());
         personConnectionDto.setEmail(connection.getEmail());
@@ -70,9 +69,9 @@ public class Conversion implements IConversion {
 
     public TransactionFullDto transactionToFullDto (final Transaction transaction){
     TransactionFullDto transactionFullDto = new TransactionFullDto();
-    transactionFullDto.setTransactionFullDtoId(transaction.getTransactionId());
-    transactionFullDto.setRecipient(transaction.getRecipient().getPersonId());
-    transactionFullDto.setSender(transaction.getSender().getPersonId());
+    transactionFullDto.setId(transaction.getId());
+    transactionFullDto.setRecipient(transaction.getRecipient().getId());
+    transactionFullDto.setSender(transaction.getSender().getId());
     transactionFullDto.setAmount(transaction.getAmount());
     transactionFullDto.setDescription(transaction.getDescription());
     return transactionFullDto;

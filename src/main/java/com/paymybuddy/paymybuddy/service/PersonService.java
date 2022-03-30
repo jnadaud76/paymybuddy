@@ -3,6 +3,7 @@ package com.paymybuddy.paymybuddy.service;
 
 import com.paymybuddy.paymybuddy.dto.PersonConnectionDto;
 import com.paymybuddy.paymybuddy.dto.PersonFullDto;
+import com.paymybuddy.paymybuddy.dto.PersonMailDto;
 import com.paymybuddy.paymybuddy.model.Person;
 
 import com.paymybuddy.paymybuddy.repository.PersonRepository;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -78,6 +80,24 @@ public class PersonService implements IPersonService {
         }
     }
 
+    public Set<PersonMailDto> getPossibleConnection (Integer personId) {
+      Set<PersonMailDto> personMailDtoSet = new HashSet<>();
+        Set<PersonFullDto> personFullDtoSet = getPersons().stream().filter(PersonFullDto -> PersonFullDto.getId() != personId
+      ).collect(Collectors.toSet());
+        Set<PersonConnectionDto> persons= getConnectionsFromPerson(personId);
+       /* Set<PersonFullDto> persons = personFullDtoSet.stream().filter(PersonFullDto -> PersonFullDto.getId() != getConnectionsFromPerson(personId).stream().iterator().next().getId()
+              ).collect(Collectors.toSet());*/
+      for (PersonConnectionDto pcd : persons) {
+          personFullDtoSet.removeIf(p -> pcd.getId() == p.getId());
+      }
+              for (PersonFullDto p : personFullDtoSet) {
+              PersonMailDto personMailDto = new PersonMailDto();
+              personMailDto.setEmail(p.getEmail());
+              personMailDtoSet.add(personMailDto);
+      }
+      return personMailDtoSet;
+    }
+
     public void addConnection(Integer personId, Integer connectionId) {
         Person person = personRepository.findById(personId).get();
         Person connection = personRepository.findById(connectionId).get();
@@ -127,7 +147,7 @@ public class PersonService implements IPersonService {
     public boolean isConnectionOf(Integer personId, Integer connectionId) {
         return !getConnectionsFromPerson(personId).stream()
                 .filter(personConnectionDto -> personConnectionDto
-                        .getPersonConnectionDtoId() == connectionId)
+                        .getId() == connectionId)
                 .collect(Collectors.toSet()).isEmpty();
     }
 }

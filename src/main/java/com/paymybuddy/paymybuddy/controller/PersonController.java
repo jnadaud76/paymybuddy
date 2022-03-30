@@ -2,6 +2,7 @@ package com.paymybuddy.paymybuddy.controller;
 
 import com.paymybuddy.paymybuddy.dto.PersonConnectionDto;
 import com.paymybuddy.paymybuddy.dto.PersonFullDto;
+import com.paymybuddy.paymybuddy.dto.PersonMailDto;
 import com.paymybuddy.paymybuddy.service.IPersonService;
 
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +31,7 @@ import io.swagger.annotations.ApiOperation;
 
 @Api("API for people CRUD operations.")
 @RestController
+//@RequestMapping(value ="api/")
 @CrossOrigin(origins = "http://localhost:4200")
 public class PersonController {
 
@@ -44,13 +47,19 @@ public class PersonController {
         return personService.getPersons();
     }
 
-    @GetMapping(value ="/email")
+    @ApiOperation(value = "Retrieve all connections that can be added.")
+    @GetMapping (value = "/possibleconnections")
+    public Set<PersonMailDto> getPossibleConnection (@RequestParam final Integer personId){
+        return personService.getPossibleConnection(personId);
+    }
+
+   /* @GetMapping(value ="/email")
     public ResponseEntity<PersonFullDto>
     getPersonByEmail (@RequestParam final String email) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(personService.getPersonByEmail(email));
 
-    }
+    }*/
 
     @ApiOperation(value = "Retrieve one user by id.")
     @GetMapping(value = "/person")
