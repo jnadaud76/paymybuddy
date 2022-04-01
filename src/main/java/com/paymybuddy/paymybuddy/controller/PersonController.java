@@ -124,7 +124,7 @@ public class PersonController {
     }
 
     @ApiOperation(value = "Transfers money from user's application account to the user's bank account.")
-    @PatchMapping (value="/toiban")
+    @PutMapping (value="/toiban")
     public ResponseEntity<String> toIban (@RequestParam final Integer personId, @RequestParam final Integer amount) {
         try {
             personService.toIbanTransfer(personId, amount);
@@ -140,7 +140,7 @@ public class PersonController {
     }
 
     @ApiOperation(value = "Transfers money from user's bank account to user's application account.")
-    @PatchMapping (value="/fromiban")
+    @PutMapping (value="/fromiban")
     public ResponseEntity<String> fromIban (@RequestParam final Integer personId, @RequestParam final Integer amount) {
             personService.fromIbanTransfer(personId, amount);
             LOGGER.info("Transfer completed successfully - code : {}", HttpStatus.OK);
@@ -151,8 +151,15 @@ public class PersonController {
 
     @ApiOperation(value = "Retrieve all user's connections by user's id.")
     @GetMapping (value = "/connections")
-    public Set<PersonConnectionDto> getConnectionFromPerson(@RequestParam final Integer personId){
-        return personService.getConnectionsFromPerson(personId);
+    public ResponseEntity<Set<PersonConnectionDto>> getConnectionFromPerson(@RequestParam final Integer personId){
+         if (!personService.getConnectionsFromPerson(personId).isEmpty()) {
+            LOGGER.info("Connections successfully found - code : {}", HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(personService.getConnectionsFromPerson(personId));
+        } else {
+            LOGGER.error("Connections not found - code : {}", HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @ApiOperation(value = "Remove a user.")

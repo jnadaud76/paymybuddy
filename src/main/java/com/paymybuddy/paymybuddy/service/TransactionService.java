@@ -11,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -40,11 +43,11 @@ public class TransactionService implements ITransactionService {
         for (Transaction transaction : transactionSet) {
             TransactionFullDto transactionFullDto = conversionService.transactionToFullDto(transaction);
             transactionFullDtoSet.add(transactionFullDto);
-        }
+                 }
         return transactionFullDtoSet;
     }
 
-    public Set<TransactionLightDto> findTransactionsBySenderId(Integer senderId) {
+    public Set<TransactionLightDto> getTransactionsBySender(Integer senderId) {
         Set<TransactionLightDto> transactionLightDtoSet = new HashSet<>();
         Set<TransactionFullDto> transactionFullDtoSet = getTransactions().stream()
                 .filter(transactionFullDto -> transactionFullDto.getSender() == senderId)

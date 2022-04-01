@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.validation.Valid;
 
@@ -38,7 +39,7 @@ public class TransactionController {
 
     @ApiOperation(value = "Retrieve all transactions.")
     @GetMapping("/transactions")
-    public Iterable<TransactionFullDto> getTransactions() {
+    public Set<TransactionFullDto> getTransactions() {
         LOGGER.info("Transactions successfully found - code : {}", HttpStatus.OK);
         return transactionService.getTransactions();
     }
@@ -46,9 +47,9 @@ public class TransactionController {
     @ApiOperation(value = "Retrieves all transactions issued by a user.")
     @GetMapping("/transactions/sender")
     public ResponseEntity<Set<TransactionLightDto>> findTransactionsBySenderId(@RequestParam final Integer senderId) {
-        if (!(transactionService.findTransactionsBySenderId(senderId).isEmpty())) {
+        if (!(transactionService.getTransactionsBySender(senderId).isEmpty())) {
             LOGGER.info("Transactions successfully found - code : {}", HttpStatus.OK);
-            return ResponseEntity.status(HttpStatus.OK).body(transactionService.findTransactionsBySenderId(senderId));
+            return ResponseEntity.status(HttpStatus.OK).body(transactionService.getTransactionsBySender(senderId));
         } else {
             LOGGER.error("Transactions not founded - code : {}", HttpStatus.NOT_FOUND);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

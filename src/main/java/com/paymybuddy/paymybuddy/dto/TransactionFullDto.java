@@ -1,5 +1,7 @@
 package com.paymybuddy.paymybuddy.dto;
 
+import java.util.Objects;
+
 public class TransactionFullDto {
 
     private int id;
@@ -56,6 +58,5 @@ public class TransactionFullDto {
     public void setDescription(String description) {
         this.description = description;
     }
-
 
 }

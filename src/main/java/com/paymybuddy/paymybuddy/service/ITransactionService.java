@@ -4,7 +4,6 @@ import com.paymybuddy.paymybuddy.dto.TransactionFullDto;
 import com.paymybuddy.paymybuddy.dto.TransactionLightDto;
 import com.paymybuddy.paymybuddy.model.Transaction;
 
-
 import java.util.Set;
 
 public interface ITransactionService {
@@ -17,7 +16,7 @@ public interface ITransactionService {
 
     void deleteTransactionById(Integer id);
 
-    Set<TransactionLightDto> findTransactionsBySenderId(Integer senderId);
+    Set<TransactionLightDto> getTransactionsBySender(Integer senderId);
 
 
 }

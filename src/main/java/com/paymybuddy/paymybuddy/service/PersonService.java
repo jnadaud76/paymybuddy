@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -92,6 +93,7 @@ public class PersonService implements IPersonService {
       }
               for (PersonFullDto p : personFullDtoSet) {
               PersonMailDto personMailDto = new PersonMailDto();
+              personMailDto.setId(p.getId());
               personMailDto.setEmail(p.getEmail());
               personMailDtoSet.add(personMailDto);
       }
@@ -99,8 +101,14 @@ public class PersonService implements IPersonService {
     }
 
     public void addConnection(Integer personId, Integer connectionId) {
-        Person person = personRepository.findById(personId).get();
-        Person connection = personRepository.findById(connectionId).get();
+        Person person;
+        Person connection;
+        if (personRepository.findById(personId).isPresent() && personRepository.findById(connectionId).isPresent()) {
+            person = personRepository.findById(personId).get();
+            connection = personRepository.findById(connectionId).get();
+        } else {
+            throw new IllegalArgumentException();
+        }
         PersonConnectionDto personConnectionDto = conversionService.connectionToConnectionDto(connection);
         if (getConnectionsFromPerson(personId).contains(personConnectionDto)) {
             throw new IllegalArgumentException();
@@ -112,8 +120,14 @@ public class PersonService implements IPersonService {
 
 
     public void removeConnection(Integer personId, Integer connectionId) {
-        Person person = personRepository.findById(personId).get();
-        Person connection = personRepository.findById(connectionId).get();
+        Person person;
+        Person connection;
+        if (personRepository.findById(personId).isPresent() && personRepository.findById(connectionId).isPresent()) {
+            person = personRepository.findById(personId).get();
+            connection = personRepository.findById(connectionId).get();
+        } else {
+            throw new IllegalArgumentException();
+        }
         PersonConnectionDto personConnectionDto = conversionService.connectionToConnectionDto(connection);
         if (!(getConnectionsFromPerson(personId).contains(personConnectionDto))) {
             throw new IllegalArgumentException();
@@ -125,13 +139,18 @@ public class PersonService implements IPersonService {
     }
 
     public Set<PersonConnectionDto> getConnectionsFromPerson(Integer personId) {
-        Person person = personRepository.findById(personId).get();
-        Set<PersonConnectionDto> connectionDtoSet = new HashSet<>();
-        for (Person connection : person.getConnections()) {
-            PersonConnectionDto personConnectionDto = conversionService.connectionToConnectionDto(connection);
-            connectionDtoSet.add(personConnectionDto);
-        }
-        return connectionDtoSet;
+        Person person;
+        if (personRepository.existsById(personId)) {
+            person = personRepository.findById(personId).get();
+            Set<PersonConnectionDto> connectionDtoSet = new HashSet<>();
+            for (Person connection : person.getConnections()) {
+                PersonConnectionDto personConnectionDto = conversionService.connectionToConnectionDto(connection);
+                connectionDtoSet.add(personConnectionDto);
+            }
+            return connectionDtoSet;
+        } else {
+                return new HashSet<>();
+            }
     }
 
     public void toIbanTransfer(Integer personId, Integer amount) {
