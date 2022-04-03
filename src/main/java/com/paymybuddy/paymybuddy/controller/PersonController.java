@@ -49,9 +49,17 @@ public class PersonController {
 
     @ApiOperation(value = "Retrieve all connections that can be added.")
     @GetMapping (value = "/possibleconnections")
-    public Set<PersonMailDto> getPossibleConnection (@RequestParam final Integer personId){
-        return personService.getPossibleConnection(personId);
+    public ResponseEntity<Set<PersonMailDto>> getPossibleConnection (@RequestParam final Integer personId){
+        if (!personService.getPossibleConnection(personId).isEmpty()) {
+            LOGGER.info("Possible connections successfully found - code : {}", HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(personService.getPossibleConnection(personId));
+        } else {
+            LOGGER.error("Possible connections not found - code : {}", HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
+
 
    /* @GetMapping(value ="/email")
     public ResponseEntity<PersonFullDto>
@@ -83,7 +91,7 @@ public class PersonController {
             LOGGER.info("Person successfully created - code : {}", HttpStatus.CREATED);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body("Person created");
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             LOGGER.error("Person can't be create - code : {}", HttpStatus.BAD_REQUEST, e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Person can't be create. May already exist");

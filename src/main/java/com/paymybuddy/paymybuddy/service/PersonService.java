@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -53,8 +54,12 @@ public class PersonService implements IPersonService {
     }
 
     public PersonFullDto getPersonByEmail (String email){
-        Person person= personRepository.findByEmail(email);
-        return conversionService.personToFullDto(person);
+        if(personRepository.findByEmail(email)!=null) {
+            Person person = personRepository.findByEmail(email);
+            return conversionService.personToFullDto(person);
+        } else {
+            return null;
+        }
     }
 
     public PersonFullDto getPersonById(Integer id) {
@@ -67,9 +72,13 @@ public class PersonService implements IPersonService {
     }
 
     public Person addPerson(PersonFullDto personFullDto) {
-        Person person = conversionService.fullDtoToPerson(personFullDto);
-        person.setPassword(passwordEncoder().encode(person.getPassword()));
-        return personRepository.save(person);
+        if (getPersonByEmail(personFullDto.getEmail())==null) {
+            Person person = conversionService.fullDtoToPerson(personFullDto);
+            person.setPassword(passwordEncoder().encode(person.getPassword()));
+            return personRepository.save(person);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public void deletePersonById(Integer id) {
@@ -82,22 +91,26 @@ public class PersonService implements IPersonService {
     }
 
     public Set<PersonMailDto> getPossibleConnection (Integer personId) {
-      Set<PersonMailDto> personMailDtoSet = new HashSet<>();
-        Set<PersonFullDto> personFullDtoSet = getPersons().stream().filter(PersonFullDto -> PersonFullDto.getId() != personId
-      ).collect(Collectors.toSet());
-        Set<PersonConnectionDto> persons= getConnectionsFromPerson(personId);
+          if (personRepository.existsById(personId)) {
+            Set<PersonMailDto> personMailDtoSet = new HashSet<>();
+            Set<PersonFullDto> personFullDtoSet = getPersons().stream().filter(PersonFullDto -> PersonFullDto.getId() != personId
+            ).collect(Collectors.toSet());
+            Set<PersonConnectionDto> persons = getConnectionsFromPerson(personId);
        /* Set<PersonFullDto> persons = personFullDtoSet.stream().filter(PersonFullDto -> PersonFullDto.getId() != getConnectionsFromPerson(personId).stream().iterator().next().getId()
               ).collect(Collectors.toSet());*/
-      for (PersonConnectionDto pcd : persons) {
-          personFullDtoSet.removeIf(p -> pcd.getId() == p.getId());
-      }
-              for (PersonFullDto p : personFullDtoSet) {
-              PersonMailDto personMailDto = new PersonMailDto();
-              personMailDto.setId(p.getId());
-              personMailDto.setEmail(p.getEmail());
-              personMailDtoSet.add(personMailDto);
-      }
-      return personMailDtoSet;
+            for (PersonConnectionDto pcd : persons) {
+                personFullDtoSet.removeIf(p -> pcd.getId() == p.getId());
+            }
+            for (PersonFullDto p : personFullDtoSet) {
+                PersonMailDto personMailDto = new PersonMailDto();
+                personMailDto.setId(p.getId());
+                personMailDto.setEmail(p.getEmail());
+                personMailDtoSet.add(personMailDto);
+            }
+            return personMailDtoSet;
+        } else {
+            return new HashSet<>();
+        }
     }
 
     public void addConnection(Integer personId, Integer connectionId) {
@@ -139,9 +152,8 @@ public class PersonService implements IPersonService {
     }
 
     public Set<PersonConnectionDto> getConnectionsFromPerson(Integer personId) {
-        Person person;
-        if (personRepository.existsById(personId)) {
-            person = personRepository.findById(personId).get();
+         if (personRepository.existsById(personId)) {
+            Person person = personRepository.findById(personId).get();
             Set<PersonConnectionDto> connectionDtoSet = new HashSet<>();
             for (Person connection : person.getConnections()) {
                 PersonConnectionDto personConnectionDto = conversionService.connectionToConnectionDto(connection);

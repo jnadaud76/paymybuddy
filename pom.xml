@@ -86,11 +86,11 @@
 			<version>3.0.0-M5</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+		<!--dependency>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-javadoc-plugin</artifactId>
 			<version>3.3.1</version>
-		</dependency>
+		</dependency-->
 	</dependencies>
 
 	<build>
@@ -160,11 +160,11 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
+			<!--plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.3.1</version>
-			</plugin>
+			</plugin-->
 		</plugins>
 	</build>
 	<reporting>
@@ -186,7 +186,7 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
-			<plugin>
+			<!--plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.3.1</version>
@@ -197,7 +197,7 @@
 						</reports>
 					</reportSet>
 				</reportSets>
-			</plugin>
+			</plugin-->
 		</plugins>
 	</reporting>
 
