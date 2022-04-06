@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,22 +19,22 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 
 @RestController
-//@RequestMapping(value ="api/")
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+@RequestMapping(value ="api")
+//@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class AuthController {
 
 
-   /* public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }*/
-@Autowired
-private IPersonService personService;
+    /* public PasswordEncoder passwordEncoder() {
+         return new BCryptPasswordEncoder();
+     }*/
+    @Autowired
+    private IPersonService personService;
     /*@Autowired
     private MyUserDetailsService myUserDetailsService;*/
 
     @GetMapping("/")
-    public String login(){
-        return "authenticated successfully";
+    public String login() {
+        return "success";
     }
 
    /* @PostMapping("/login")
@@ -48,35 +50,36 @@ private IPersonService personService;
 
         }*/
 
-   /* @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody PersonLoginDto user) {
-        //String encodedPassword = passwordEncoder().encode(user.getPassword());
+    /* @PostMapping("/login")
+     public ResponseEntity<User> login(@RequestBody PersonLoginDto user) {
+         //String encodedPassword = passwordEncoder().encode(user.getPassword());
 
-            User userDetails = (User) myUserDetailsService.loadUserByUsername(user.getEmail());
-            if (user.getEmail().equals(userDetails.getUsername())
-                    && user.getPassword().equals(userDetails.getPassword())) {
-                return new ResponseEntity<>(userDetails, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+             User userDetails = (User) myUserDetailsService.loadUserByUsername(user.getEmail());
+             if (user.getEmail().equals(userDetails.getUsername())
+                     && user.getPassword().equals(userDetails.getPassword())) {
+                 return new ResponseEntity<>(userDetails, HttpStatus.OK);
+             } else {
+                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+             }
 
 
-    }*/
-   @GetMapping(value ="/user")
-   public ResponseEntity<PersonFullDto>
-   getPersonByEmail (@RequestParam final String email) {
+     }*/
+    @GetMapping(value = "/user")
+    public ResponseEntity<PersonFullDto>
+    getPersonByEmail(@RequestParam final String email) {
        return ResponseEntity.status(HttpStatus.OK)
-               .body(personService.getPersonByEmail(email));
+                .body(personService.getPersonByEmail(email));
 
-   }
-
-    /*@GetMapping("/user")
-    public Principal user (Principal user) {
-        return user;
-    }*/
+    }
 }
 
-    /*@RequestMapping("/user")
+ /*   @GetMapping("/user")
+    public Principal user (Principal user) {
+        return user;
+    }
+}*/
+
+ /*   @RequestMapping("/user")
     public Principal user(HttpServletRequest request) {
         String authToken = request.getHeader("Authorization")
                 .substring("Basic".length()).trim();

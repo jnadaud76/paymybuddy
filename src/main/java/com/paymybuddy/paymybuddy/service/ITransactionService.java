@@ -12,7 +12,7 @@ public interface ITransactionService {
 
     TransactionFullDto getTransactionById(Integer id);
 
-    Transaction addTransaction(TransactionFullDto transactionFullDto);
+    TransactionFullDto addTransaction(TransactionFullDto transactionFullDto);
 
     void deleteTransactionById(Integer id);
 

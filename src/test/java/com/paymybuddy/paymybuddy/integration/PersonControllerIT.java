@@ -3,6 +3,7 @@ package com.paymybuddy.paymybuddy.integration;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.contains;
 import static org.mockito.Mockito.doThrow;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paymybuddy.paymybuddy.dto.PersonFullDto;
 import com.paymybuddy.paymybuddy.model.Person;
 
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,26 +25,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithSecurityContext;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithMockUser
 public class PersonControllerIT {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     void TestGetPersons() throws Exception {
-        mockMvc.perform(get("/persons"))
+        mockMvc.perform(get("/api/persons"))
                 .andExpect(status().isOk());
     }
 
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void TestGetPossibleConnection(int ints) throws Exception {
-        mockMvc.perform(get("/possibleconnections")
+        mockMvc.perform(get("/api/possibleconnections")
                         .queryParam("personId", String.valueOf(ints)))
                 .andExpect(status().isOk());
               // .andExpect(jsonPath("$.id", contains(4)))
@@ -52,7 +61,7 @@ public class PersonControllerIT {
 
    @Test
     void TestGetPossibleConnectionWithBadId() throws Exception {
-        mockMvc.perform(get("/possibleconnections")
+        mockMvc.perform(get("/api/possibleconnections")
                         .queryParam("personId", "123"))
                 .andExpect(status().isNotFound());
         // .andExpect(jsonPath("$.id", contains(4)))
@@ -63,7 +72,7 @@ public class PersonControllerIT {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void TestGetPersonById(int ints) throws Exception {
-        mockMvc.perform(get("/person")
+        mockMvc.perform(get("/api/person")
                         .queryParam("personId", String.valueOf(ints)))
                 .andExpect(status().isOk());
     }
@@ -71,7 +80,7 @@ public class PersonControllerIT {
     @ParameterizedTest
     @ValueSource(ints = {10, 11, 12, 13})
     void TestGetPersonByIdWithBadId(int ints) throws Exception {
-        mockMvc.perform(get("/person")
+        mockMvc.perform(get("/api/person")
                         .queryParam("personId", String.valueOf(ints)))
                 .andExpect(status().isNotFound());
     }
@@ -87,7 +96,7 @@ public class PersonControllerIT {
         personFullDto.setIban("FR12345678912345678912345678");
         String personAsString = objectMapper.writeValueAsString(personFullDto);
 
-        mockMvc.perform(post("/person")
+        mockMvc.perform(post("/api/person")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(personAsString))
                 .andExpect(status().isCreated());
@@ -104,7 +113,7 @@ public class PersonControllerIT {
         person.setIban("FR12345678912345678912345678");
         String personAsString = objectMapper.writeValueAsString(person);
 
-        mockMvc.perform(post("/person")
+        mockMvc.perform(post("/api/person")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(personAsString))
                 .andExpect(status().isBadRequest());
@@ -112,7 +121,7 @@ public class PersonControllerIT {
 
     @Test
     void TestAddConnection() throws Exception {
-        mockMvc.perform(put("/person/connection/add")
+        mockMvc.perform(put("/api/person/connection/add")
                         .queryParam("personId", "1")
                         .queryParam("connectionId", "3"))
                 .andExpect(status().isCreated());
@@ -120,7 +129,7 @@ public class PersonControllerIT {
 
     @Test
     void TestAddConnectionWhichAlreadyExist() throws Exception {
-        mockMvc.perform(put("/person/connection/add")
+        mockMvc.perform(put("/api/person/connection/add")
                         .queryParam("personId", "1")
                         .queryParam("connectionId", "2"))
                 .andExpect(status().isBadRequest());
@@ -128,7 +137,7 @@ public class PersonControllerIT {
 
     @Test
     void TestAddConnectionWithBadArgument() throws Exception {
-        mockMvc.perform(put("/person/connection/add")
+        mockMvc.perform(put("/api/person/connection/add")
                         .queryParam("personId", "1")
                         .queryParam("connectionId", "12"))
                 .andExpect(status().isBadRequest());
@@ -136,7 +145,7 @@ public class PersonControllerIT {
 
     @Test
     void TestRemoveConnection() throws Exception {
-            mockMvc.perform(put("/person/connection/remove")
+            mockMvc.perform(put("/api/person/connection/remove")
                         .queryParam("personId", "1")
                         .queryParam("connectionId", "3"))
                 .andExpect(status().isOk());
@@ -144,7 +153,7 @@ public class PersonControllerIT {
 
     @Test
     void TestRemoveConnectionWhichAlreadyExist() throws Exception {
-              mockMvc.perform(put("/person/connection/remove")
+              mockMvc.perform(put("/api/person/connection/remove")
                         .queryParam("personId", "1")
                         .queryParam("connectionId", "19"))
                 .andExpect(status().isBadRequest());
@@ -152,7 +161,7 @@ public class PersonControllerIT {
 
     @Test
     void TestRemoveConnectionWithBadArgument() throws Exception {
-              mockMvc.perform(put("/person/connection/remove")
+              mockMvc.perform(put("/api/person/connection/remove")
                         .queryParam("personId", "17")
                         .queryParam("connectionId", "12"))
                 .andExpect(status().isBadRequest());
@@ -160,7 +169,7 @@ public class PersonControllerIT {
 
     @Test
     void TestGetConnectionFromPerson() throws Exception {
-        mockMvc.perform(get("/connections")
+        mockMvc.perform(get("/api/connections")
                         .queryParam("personId", "1"))
                 .andExpect(status().isOk());
     }
@@ -168,14 +177,14 @@ public class PersonControllerIT {
     @ParameterizedTest
     @ValueSource(ints = {17, 28, 99})
     void TestGetConnectionFromPersonWithBadId(int ints) throws Exception {
-        mockMvc.perform(get("/connections")
+        mockMvc.perform(get("/api/connections")
                         .queryParam("personId", String.valueOf(ints)))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void TestToIban() throws Exception {
-               mockMvc.perform(put("/toiban")
+               mockMvc.perform(put("/api/toiban")
                         .queryParam("personId", "1")
                         .queryParam("amount", "100"))
                 .andExpect(status().isOk());
@@ -184,7 +193,7 @@ public class PersonControllerIT {
 
     @Test
     void TestToIbanWithBadValue() throws Exception {
-           mockMvc.perform(put("/toiban")
+           mockMvc.perform(put("/api/toiban")
                         .queryParam("personId", "1")
                         .queryParam("amount", "10000"))
                 .andExpect(status().isBadRequest());
@@ -194,7 +203,7 @@ public class PersonControllerIT {
 
     @Test
     void TestFromIban() throws Exception {
-            mockMvc.perform(put("/fromiban")
+            mockMvc.perform(put("/api/fromiban")
                         .queryParam("personId", "1")
                         .queryParam("amount", "1000"))
                 .andExpect(status().isOk());
@@ -203,7 +212,7 @@ public class PersonControllerIT {
 
     @Test
     void TestDeletePerson() throws Exception {
-        mockMvc.perform(delete("/person")
+        mockMvc.perform(delete("/api/person")
                         .queryParam("personId", "5"))
                 .andExpect(status().isOk());
     }
@@ -211,7 +220,7 @@ public class PersonControllerIT {
     @ParameterizedTest
     @ValueSource(ints = {24, 32, 99})
     void TestDeletePersonWithBadId(int ints) throws Exception {
-        mockMvc.perform(delete("/person)")
+        mockMvc.perform(delete("/api/person)")
                 .queryParam("personId", String.valueOf(ints)))
                 .andExpect(status().isNotFound());
 

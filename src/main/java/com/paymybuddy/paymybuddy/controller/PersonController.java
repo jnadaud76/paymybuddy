@@ -31,8 +31,8 @@ import io.swagger.annotations.ApiOperation;
 
 @Api("API for people CRUD operations.")
 @RestController
-//@RequestMapping(value ="api/")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping(value ="api")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class PersonController {
 
     @Autowired
@@ -180,7 +180,7 @@ public class PersonController {
             return ResponseEntity.status(HttpStatus.OK)
                     .body("Successfully deleted");
 
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             LOGGER.error("Person can't be delete - code : {}", HttpStatus.BAD_REQUEST, e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Cant delete! Entity not exist");

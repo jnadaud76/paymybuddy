@@ -60,11 +60,10 @@ public class TransactionService implements ITransactionService {
              transactionLightDto.setAmount(t.getAmount());
              transactionLightDto.setDescription(t.getDescription());
              transactionLightDtoSet.add(transactionLightDto);
-
-
          }
          return transactionLightDtoSet;
     }
+
     public TransactionFullDto getTransactionById(Integer id) {
         if (transactionRepository.existsById(id)) {
             Transaction transaction = transactionRepository.findById(id).get();
@@ -74,13 +73,14 @@ public class TransactionService implements ITransactionService {
         }
     }
 
-    public Transaction addTransaction(TransactionFullDto transactionFullDto) {
+    public TransactionFullDto addTransaction(TransactionFullDto transactionFullDto) {
         if (personService.isConnectionOf(transactionFullDto.getSender(), transactionFullDto.getRecipient())) {
             Transaction transaction = conversionService.fullDtoToTransaction(transactionFullDto);
             calculator.updateAmountAvailable(transactionFullDto.getRecipient()
                     , transactionFullDto.getSender()
                     , transactionFullDto.getAmount());
-            return transactionRepository.save(transaction);
+            transactionRepository.save(transaction);
+            return transactionFullDto;
         } else {
             throw new IllegalArgumentException();
         }

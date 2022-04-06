@@ -12,7 +12,7 @@ public interface IPersonService {
 
     PersonFullDto getPersonById(Integer id);
 
-    Person addPerson(PersonFullDto personFullDto);
+    PersonFullDto addPerson(PersonFullDto personFullDto);
 
     void deletePersonById(Integer id);
 

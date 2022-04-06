@@ -28,8 +28,8 @@ import io.swagger.annotations.ApiOperation;
 
 @Api("API for transaction CRUD operations.")
 @RestController
-//@RequestMapping(value ="api/")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping(value ="api")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class TransactionController {
 
     @Autowired
@@ -96,7 +96,7 @@ public class TransactionController {
             return ResponseEntity.status(HttpStatus.OK)
                     .body("Successfully deleted");
 
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             LOGGER.error("Transaction can't be delete - code : {}", HttpStatus.BAD_REQUEST, e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Cant delete! Transaction not exist");

@@ -30,6 +30,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 
 
 @Entity
@@ -54,8 +55,8 @@ public class Person {
     @Column(name = "EMAIL", unique = true, nullable = false, length=100)
     private String email;
 
-    /*@Pattern(regexp="(?=.{8,20}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W).*$")
-    @Length(min=8,max=20)*/
+    //@Pattern(regexp="(?=.{8,20}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W).*$")
+    //@Length(min=8,max=20)
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 

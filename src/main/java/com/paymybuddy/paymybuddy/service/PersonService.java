@@ -71,11 +71,12 @@ public class PersonService implements IPersonService {
         }
     }
 
-    public Person addPerson(PersonFullDto personFullDto) {
+    public PersonFullDto addPerson(PersonFullDto personFullDto) {
         if (getPersonByEmail(personFullDto.getEmail())==null) {
             Person person = conversionService.fullDtoToPerson(personFullDto);
             person.setPassword(passwordEncoder().encode(person.getPassword()));
-            return personRepository.save(person);
+            personRepository.save(person);
+            return personFullDto;
         } else {
             throw new IllegalArgumentException();
         }
