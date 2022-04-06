@@ -11,11 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -91,7 +88,6 @@ public class TransactionService implements ITransactionService {
         if (transactionRepository.existsById(id)) {
             transactionRepository.deleteById(id);
         } else {
-            //LOGGER.error("Person doesn't exist in Set", new IllegalArgumentException());
             throw new IllegalArgumentException();
         }
 

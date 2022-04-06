@@ -11,10 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +30,6 @@ import io.swagger.annotations.ApiOperation;
 @Api("API for people CRUD operations.")
 @RestController
 @RequestMapping(value ="api")
-//@CrossOrigin(origins = "http://localhost:4200")
 public class PersonController {
 
     @Autowired
@@ -59,15 +56,6 @@ public class PersonController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
-
-
-   /* @GetMapping(value ="/email")
-    public ResponseEntity<PersonFullDto>
-    getPersonByEmail (@RequestParam final String email) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(personService.getPersonByEmail(email));
-
-    }*/
 
     @ApiOperation(value = "Retrieve one user by id.")
     @GetMapping(value = "/person")

@@ -5,7 +5,6 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -3,8 +3,6 @@ package com.paymybuddy.paymybuddy.service;
 import com.paymybuddy.paymybuddy.dto.PersonConnectionDto;
 import com.paymybuddy.paymybuddy.dto.PersonFullDto;
 import com.paymybuddy.paymybuddy.dto.PersonMailDto;
-import com.paymybuddy.paymybuddy.model.Person;
-
 import java.util.Set;
 
 public interface IPersonService {

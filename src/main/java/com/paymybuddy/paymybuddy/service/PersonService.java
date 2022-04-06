@@ -17,10 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -86,7 +83,6 @@ public class PersonService implements IPersonService {
         if (personRepository.existsById(id)) {
             personRepository.deleteById(id);
         } else {
-            //LOGGER.error("Person doesn't exist in Set", new IllegalArgumentException());
             throw new IllegalArgumentException();
         }
     }
@@ -94,11 +90,9 @@ public class PersonService implements IPersonService {
     public Set<PersonMailDto> getPossibleConnection (Integer personId) {
           if (personRepository.existsById(personId)) {
             Set<PersonMailDto> personMailDtoSet = new HashSet<>();
-            Set<PersonFullDto> personFullDtoSet = getPersons().stream().filter(PersonFullDto -> PersonFullDto.getId() != personId
+            Set<PersonFullDto> personFullDtoSet = getPersons().stream().filter(personFullDto -> personFullDto.getId() != personId
             ).collect(Collectors.toSet());
             Set<PersonConnectionDto> persons = getConnectionsFromPerson(personId);
-       /* Set<PersonFullDto> persons = personFullDtoSet.stream().filter(PersonFullDto -> PersonFullDto.getId() != getConnectionsFromPerson(personId).stream().iterator().next().getId()
-              ).collect(Collectors.toSet());*/
             for (PersonConnectionDto pcd : persons) {
                 personFullDtoSet.removeIf(p -> pcd.getId() == p.getId());
             }

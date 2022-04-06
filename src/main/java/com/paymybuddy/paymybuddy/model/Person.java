@@ -1,17 +1,8 @@
 package com.paymybuddy.paymybuddy.model;
 
-
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.io.Serializable;
-import java.util.Collection;
 import java.util.HashSet;
 
 import java.util.Set;
@@ -30,7 +21,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
 
 
 @Entity
@@ -109,65 +99,6 @@ public class Person {
             inverseJoinColumns = @JoinColumn(name = "PERSON_ID", referencedColumnName = "ID", nullable = false)
     )
     private Set<Person> connectionsOf = new HashSet<>();
-
-   /* @JsonIgnore
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-
-   /* public Person(){
-
-    }
-
-    public Person(int personId, String firstName, String lastName, String email, String password, String iban, double amountAvailable) {
-        this.personId = personId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.iban = iban;
-        this.amountAvailable = amountAvailable;
-    }
-
-    public Person(int personId, String firstName, String lastName, String email,
-                  String password, String iban, double amountAvailable,
-                  Set<Person> connections) {
-        this.personId = personId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.iban = iban;
-        this.amountAvailable = amountAvailable;
-        this.connections = connections;
-    }*/
 
     public int getId() {
         return id;

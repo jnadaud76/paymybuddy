@@ -2,7 +2,6 @@ package com.paymybuddy.paymybuddy.service;
 
 import com.paymybuddy.paymybuddy.dto.TransactionFullDto;
 import com.paymybuddy.paymybuddy.dto.TransactionLightDto;
-import com.paymybuddy.paymybuddy.model.Transaction;
 
 import java.util.Set;
 
