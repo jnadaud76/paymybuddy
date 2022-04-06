@@ -13,21 +13,21 @@ import com.paymybuddy.paymybuddy.controller.PersonController;
 import com.paymybuddy.paymybuddy.dto.PersonConnectionDto;
 import com.paymybuddy.paymybuddy.dto.PersonFullDto;
 import com.paymybuddy.paymybuddy.dto.PersonMailDto;
-import com.paymybuddy.paymybuddy.model.Person;
+
 import com.paymybuddy.paymybuddy.service.IPersonService;
 import com.paymybuddy.paymybuddy.service.MyUserDetailsService;
-import com.paymybuddy.paymybuddy.util.IConversion;
+
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
+
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
+
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashSet;
@@ -35,7 +35,7 @@ import java.util.Set;
 
 @WithMockUser
 @WebMvcTest(controllers = PersonController.class)
-public class PersonControllerTest {
+class PersonControllerTest {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -45,8 +45,6 @@ public class PersonControllerTest {
     private MyUserDetailsService userDetailsService;
     @MockBean
     private IPersonService personService;
-    /*@MockBean
-    private IConversion conversionService;*/
 
     @Test
     void TestGetPersons() throws Exception {
@@ -65,8 +63,7 @@ public class PersonControllerTest {
         mockMvc.perform(get("/api/possibleconnections")
                         .queryParam("personId", "1"))
                 .andExpect(status().isOk());
-        // .andExpect(jsonPath("$.id", contains(4)))
-        //.andExpect(jsonPath("$.email", contains("patrickdupont@gmail.com")));
+
 
     }
 
@@ -93,8 +90,6 @@ public class PersonControllerTest {
     @ParameterizedTest
     @ValueSource(ints = {10, 11, 12, 13})
     void TestGetPersonByIdWithBadId(int ints) throws Exception {
-        PersonFullDto personFullDto = new PersonFullDto();
-        personFullDto.setId(ints);
         when(personService.getPersonById(ints)).thenReturn(null);
         mockMvc.perform(get("/api/person")
                         .queryParam("personId", String.valueOf(ints)))
@@ -111,7 +106,6 @@ public class PersonControllerTest {
         personFullDto.setPassword("Me1234567!");
         personFullDto.setIban("FR12345678912345678912345678");
         String personAsString = objectMapper.writeValueAsString(personFullDto);
-        //Person person = conversionService.fullDtoToPerson(personFullDto);
         when(personService.addPerson(personFullDto)).thenReturn(personFullDto);
 
         mockMvc.perform(post("/api/person")
@@ -129,14 +123,11 @@ public class PersonControllerTest {
         personFullDto.setEmail("johndoe@hotmail.com");
         personFullDto.setPassword("Me1234567!");
         personFullDto.setIban("FR12345678912345678912345678");
-        //String personAsString = objectMapper.writeValueAsString(personFullDto);
-        //Person person = conversionService.fullDtoToPerson(personFullDto);
         doThrow(new IllegalArgumentException()).when(personService).addPerson(personFullDto);
 
         mockMvc.perform(post("/api/person")
                         .contentType(MediaType.APPLICATION_JSON))
-                        //.content(personAsString))
-                .andExpect(status().isBadRequest());
+                               .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -242,21 +233,11 @@ public class PersonControllerTest {
 
     }
 
-   /* @ParameterizedTest
-    @ValueSource(ints = {-100, 0})
-    void TestFromIbanWithBadValue(int ints) throws Exception {
-        doThrow(new IllegalArgumentException()).when(personService).toIbanTransfer(1, ints);
-        mockMvc.perform(put("/fromiban")
-                        .queryParam("personId", "1")
-                        .queryParam("amount", String.valueOf(ints)))
-                .andExpect(status().isBadRequest());
-
-    }*/
 
     @ParameterizedTest
     @ValueSource(ints = {17, 28, 99})
     void TestGetConnectionFromPersonWithBadId(int ints) throws Exception {
-        Set<PersonConnectionDto> emptySet = new HashSet();
+        Set<PersonConnectionDto> emptySet = new HashSet<>();
         when(personService.getConnectionsFromPerson(ints)).thenReturn(emptySet);
         mockMvc.perform(get("/api/connections")
                         .queryParam("personId", String.valueOf(ints)))

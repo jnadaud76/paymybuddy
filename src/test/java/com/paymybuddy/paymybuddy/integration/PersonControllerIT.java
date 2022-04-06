@@ -1,41 +1,32 @@
 package com.paymybuddy.paymybuddy.integration;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.contains;
-import static org.mockito.Mockito.doThrow;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paymybuddy.paymybuddy.dto.PersonFullDto;
 import com.paymybuddy.paymybuddy.model.Person;
 
-import org.junit.Before;
-import org.junit.FixMethodOrder;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.junit.runners.MethodSorters;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithSecurityContext;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @WithMockUser
-public class PersonControllerIT {
+class PersonControllerIT {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -54,19 +45,13 @@ public class PersonControllerIT {
         mockMvc.perform(get("/api/possibleconnections")
                         .queryParam("personId", String.valueOf(ints)))
                 .andExpect(status().isOk());
-              // .andExpect(jsonPath("$.id", contains(4)))
-               //.andExpect(jsonPath("$.email", contains("patrickdupont@gmail.com")));
-
-    }
+     }
 
    @Test
     void TestGetPossibleConnectionWithBadId() throws Exception {
         mockMvc.perform(get("/api/possibleconnections")
                         .queryParam("personId", "123"))
                 .andExpect(status().isNotFound());
-        // .andExpect(jsonPath("$.id", contains(4)))
-        //.andExpect(jsonPath("$.email", contains("patrickdupont@gmail.com")));
-
     }
 
     @ParameterizedTest

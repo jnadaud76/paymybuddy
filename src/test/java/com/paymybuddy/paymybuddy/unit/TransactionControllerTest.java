@@ -8,15 +8,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paymybuddy.paymybuddy.controller.PersonController;
+
 import com.paymybuddy.paymybuddy.controller.TransactionController;
-import com.paymybuddy.paymybuddy.dto.PersonFullDto;
+
 import com.paymybuddy.paymybuddy.dto.TransactionFullDto;
 import com.paymybuddy.paymybuddy.dto.TransactionLightDto;
-import com.paymybuddy.paymybuddy.service.IPersonService;
+
 import com.paymybuddy.paymybuddy.service.ITransactionService;
 import com.paymybuddy.paymybuddy.service.MyUserDetailsService;
-import com.paymybuddy.paymybuddy.util.IConversion;
+
 
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -28,6 +28,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashSet;
@@ -35,7 +36,7 @@ import java.util.Set;
 
 @WithMockUser
 @WebMvcTest(controllers = TransactionController.class)
-public class TransactionControllerTest {
+class TransactionControllerTest {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -45,8 +46,6 @@ public class TransactionControllerTest {
     private MyUserDetailsService userDetailsService;
     @MockBean
     private ITransactionService transactionService;
-    /*@MockBean
-    private IConversion conversionService;*/
 
     @Test
     void TestGetTransactions() throws Exception {
@@ -93,8 +92,6 @@ public class TransactionControllerTest {
     @ParameterizedTest
     @ValueSource(ints= {18, 24, 39})
     void TestGetTransactionByIdWithBad(int ints) throws Exception {
-        TransactionFullDto transactionFullDto = new TransactionFullDto();
-        transactionFullDto.setId(ints);
         when(transactionService.getTransactionById(ints)).thenReturn(null);
         mockMvc.perform(get("/api/transaction")
                         .queryParam("transactionId", String.valueOf(ints)))
@@ -117,7 +114,6 @@ public class TransactionControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    @Test
     @RepeatedTest(5)
     void TestCreateTransactionFiveTimes() throws Exception {
         TransactionFullDto transactionFullDto = new TransactionFullDto();
@@ -142,13 +138,11 @@ public class TransactionControllerTest {
         transactionFullDto.setRecipient(b);
         transactionFullDto.setDescription("Transaction5");
         transactionFullDto.setAmount(100);
-        //String transactionAsString = objectMapper.writeValueAsString(transactionFullDto);
         doThrow(new IllegalArgumentException()).when(transactionService).addTransaction(transactionFullDto);
 
         mockMvc.perform(post("/api/transaction")
                         .contentType(MediaType.APPLICATION_JSON))
-                       // .content(transactionAsString))
-                .andExpect(status().isBadRequest());
+                        .andExpect(status().isBadRequest());
     }
 
     @Test

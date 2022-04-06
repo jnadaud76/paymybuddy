@@ -1,7 +1,5 @@
 package com.paymybuddy.paymybuddy.integration;
 
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -9,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paymybuddy.paymybuddy.dto.TransactionFullDto;
-import com.paymybuddy.paymybuddy.dto.TransactionLightDto;
+
 
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -23,13 +21,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @SpringBootTest
 @AutoConfigureMockMvc
 @WithMockUser
-public class TransactionControllerIT {
+class TransactionControllerIT {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
@@ -92,7 +87,7 @@ public class TransactionControllerIT {
                 .andExpect(status().isCreated());
     }
 
-    @Test
+
     @RepeatedTest(5)
     void TestCreateTransactionFiveTimes() throws Exception {
         TransactionFullDto transactionFullDto = new TransactionFullDto();
@@ -117,12 +112,12 @@ public class TransactionControllerIT {
         transactionFullDto.setRecipient(b);
         transactionFullDto.setDescription("Transaction5");
         transactionFullDto.setAmount(100);
-        //String transactionAsString = objectMapper.writeValueAsString(transactionFullDto);
+        String transactionAsString = objectMapper.writeValueAsString(transactionFullDto);
 
         mockMvc.perform(post("/api/transaction")
-                        .contentType(MediaType.APPLICATION_JSON))
-                // .content(transactionAsString))
-                .andExpect(status().isBadRequest());
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(transactionAsString))
+                        .andExpect(status().isBadRequest());
     }
 
     @Test
