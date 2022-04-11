@@ -22,6 +22,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MyUserDetailsService userDetailsService;
 
+    @Autowired
+    private MyBasicAuthenticationEntryPoint authenticationEntryPoint;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -47,7 +50,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 //.key("Xgt124589*-thHHfhotfR")
                 //.tokenValiditySeconds(86400)
                 .and()
-                .httpBasic();
+                .httpBasic()
+                .authenticationEntryPoint(authenticationEntryPoint);
 
     }
 

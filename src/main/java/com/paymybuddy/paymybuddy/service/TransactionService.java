@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,7 +46,7 @@ public class TransactionService implements ITransactionService {
         return transactionFullDtoSet;
     }
 
-    public Set<TransactionLightDto> getTransactionsBySender(Integer senderId) {
+    public List<TransactionLightDto> getTransactionsBySender(Integer senderId) {
         Set<TransactionLightDto> transactionLightDtoSet = new HashSet<>();
         Set<TransactionFullDto> transactionFullDtoSet = getTransactions().stream()
                 .filter(transactionFullDto -> transactionFullDto.getSender() == senderId)
@@ -58,7 +60,11 @@ public class TransactionService implements ITransactionService {
              transactionLightDto.setDescription(t.getDescription());
              transactionLightDtoSet.add(transactionLightDto);
          }
-         return transactionLightDtoSet;
+        return transactionLightDtoSet.stream()
+                 .sorted(Comparator.comparing(TransactionLightDto::getId).reversed())
+                .collect(Collectors.toList());
+
+
     }
 
     public TransactionFullDto getTransactionById(Integer id) {

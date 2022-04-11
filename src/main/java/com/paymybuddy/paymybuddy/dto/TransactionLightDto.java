@@ -45,4 +45,5 @@ public class TransactionLightDto {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

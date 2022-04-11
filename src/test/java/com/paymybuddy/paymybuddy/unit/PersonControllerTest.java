@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paymybuddy.paymybuddy.configuration.MyBasicAuthenticationEntryPoint;
 import com.paymybuddy.paymybuddy.controller.PersonController;
 import com.paymybuddy.paymybuddy.dto.PersonConnectionDto;
 import com.paymybuddy.paymybuddy.dto.PersonFullDto;
@@ -43,6 +44,8 @@ class PersonControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private MyUserDetailsService userDetailsService;
+    @MockBean
+    private MyBasicAuthenticationEntryPoint authenticationEntryPoint;
     @MockBean
     private IPersonService personService;
 

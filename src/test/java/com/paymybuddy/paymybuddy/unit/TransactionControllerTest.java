@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.paymybuddy.paymybuddy.configuration.MyBasicAuthenticationEntryPoint;
 import com.paymybuddy.paymybuddy.controller.TransactionController;
 
 import com.paymybuddy.paymybuddy.dto.TransactionFullDto;
@@ -31,7 +32,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @WithMockUser
@@ -44,6 +47,8 @@ class TransactionControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private MyUserDetailsService userDetailsService;
+    @MockBean
+    private MyBasicAuthenticationEntryPoint authenticationEntryPoint;
     @MockBean
     private ITransactionService transactionService;
 
@@ -66,11 +71,11 @@ class TransactionControllerTest {
 
    @Test
     void TestGetTransactionBySender() throws Exception {
-        Set<TransactionLightDto> transactionLightDtoSet = new HashSet<>();
+        List<TransactionLightDto> transactionLightDtoList = new ArrayList<>();
         TransactionLightDto transactionLightDto = new TransactionLightDto();
         transactionLightDto.setId(1);
-        transactionLightDtoSet.add(transactionLightDto);
-        when(transactionService.getTransactionsBySender(1)).thenReturn(transactionLightDtoSet);
+       transactionLightDtoList.add(transactionLightDto);
+        when(transactionService.getTransactionsBySender(1)).thenReturn(transactionLightDtoList);
         mockMvc.perform(get("/api/transactions/sender")
                         .queryParam("senderId", "1"))
                 .andExpect(status().isOk());
@@ -79,8 +84,8 @@ class TransactionControllerTest {
     @ParameterizedTest
     @ValueSource(ints = {4, 32, 72})
     void TestGetTransactionBySenderWithBadArguments(int ints) throws Exception {
-        Set<TransactionLightDto> transactionLightDtoSet = new HashSet<>();
-        when(transactionService.getTransactionsBySender(1)).thenReturn(transactionLightDtoSet);
+        List<TransactionLightDto> transactionLightDtoList = new ArrayList<>();
+        when(transactionService.getTransactionsBySender(1)).thenReturn(transactionLightDtoList);
         mockMvc.perform(get("/api/transactions/sender")
                         .queryParam("senderId", String.valueOf(ints)))
                 .andExpect(status().isNotFound());

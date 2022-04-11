@@ -1,0 +1,16 @@
+SET FOREIGN_KEY_CHECKS = 0;
+truncate table paymybuddy.person;
+SET FOREIGN_KEY_CHECKS = 1;
+INSERT INTO paymybuddy.person (ID, FIRSTNAME, LASTNAME, EMAIL, PASSWORD, IBAN, AMOUNT_AVAILABLE) VALUES (1, 'John', 'Doe', 'johndoe@hotmail.com', '$2a$10$fTOf8LZobIMbqskqmJyO3uhDNsDI2A51ELJhi5c8b.Naw.DrsG5B2', 'FR12345678912345678912345678', 1400.00);
+INSERT INTO paymybuddy.person (ID, FIRSTNAME, LASTNAME, EMAIL, PASSWORD, IBAN, AMOUNT_AVAILABLE) VALUES (2, 'Jean', 'Durant', 'jeandurant@hotmail.fr', '$2a$10$5ZKet59GMXGE1Ak8q1jiRubAuCiX.HLRUnKJ1IWuwL0TYXbVab4.O', 'FR12345678912345678912345670', 0.00);
+INSERT INTO paymybuddy.person (ID, FIRSTNAME, LASTNAME, EMAIL, PASSWORD, IBAN, AMOUNT_AVAILABLE) VALUES (3, 'David', 'Smith', 'davidsmith@yahoo.fr', '$2a$10$EV0KmFvsXPGzV4qwDCc/lOIE.g8E8bis8vNpm1RH9/xlrKF0XHIDW', 'FR12345678912345678912345671', 600.00);
+INSERT INTO paymybuddy.person (ID, FIRSTNAME, LASTNAME, EMAIL, PASSWORD, IBAN, AMOUNT_AVAILABLE) VALUES (4, 'Patrick', 'Dupont', 'patrickdupont@gmail.com', '$2a$10$YQXhEQGc1oXwCqccYdWmsewPd.Xf145fhEUl87rLG.n.xDEWfBEyK', 'FR12345678912345678912345679', 3000.00);
+INSERT INTO paymybuddy.person (ID, FIRSTNAME, LASTNAME, EMAIL, PASSWORD, IBAN, AMOUNT_AVAILABLE) VALUES (5, 'Denis', 'Lherme', 'denislherme@gmail.com', '$2a$10$YQXhEQGc1oXwCqccYdWmsewPd.Xf145fhEUl87rLG.n.xDEWfBEyK', 'FR12345678912345678912345672', 3000.00);
+truncate table paymybuddy.person_connection;
+INSERT INTO paymybuddy.person_connection (PERSON_ID, CONNECTION_ID) VALUES (1, 2);
+INSERT INTO paymybuddy.person_connection (PERSON_ID, CONNECTION_ID) VALUES (1, 3);
+truncate table paymybuddy.transaction;
+INSERT INTO paymybuddy.transaction (ID, DATE, RECIPIENT, SENDER, AMOUNT, DESCRIPTION, FEE_AMOUNT) VALUES (1, '2022-04-01 10:25:47', 3, 1, 100, 'Transaction1', 0.50);
+INSERT INTO paymybuddy.transaction (ID, DATE, RECIPIENT, SENDER, AMOUNT, DESCRIPTION, FEE_AMOUNT) VALUES (2, '2022-04-01 10:25:57', 3, 1, 500, 'Transaction2', 2.50);
+INSERT INTO paymybuddy.transaction (ID, DATE, RECIPIENT, SENDER, AMOUNT, DESCRIPTION, FEE_AMOUNT) VALUES (3, '2022-04-01 10:26:06', 4, 1, 500, 'Transaction3', 2.50);
+INSERT INTO paymybuddy.transaction (ID, DATE, RECIPIENT, SENDER, AMOUNT, DESCRIPTION, FEE_AMOUNT) VALUES (4, '2022-04-01 10:26:12', 4, 1, 500, 'Transaction4', 2.50);

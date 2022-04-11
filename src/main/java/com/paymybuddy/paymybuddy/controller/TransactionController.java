@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -43,7 +44,7 @@ public class TransactionController {
 
     @ApiOperation(value = "Retrieves all transactions issued by a user.")
     @GetMapping("/transactions/sender")
-    public ResponseEntity<Set<TransactionLightDto>> findTransactionsBySenderId(@RequestParam final Integer senderId) {
+    public ResponseEntity<List<TransactionLightDto>> findTransactionsBySenderId(@RequestParam final Integer senderId) {
         if (!(transactionService.getTransactionsBySender(senderId).isEmpty())) {
             LOGGER.info("Transactions successfully found - code : {}", HttpStatus.OK);
             return ResponseEntity.status(HttpStatus.OK).body(transactionService.getTransactionsBySender(senderId));

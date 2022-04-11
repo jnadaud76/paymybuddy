@@ -3,6 +3,7 @@ package com.paymybuddy.paymybuddy.service;
 import com.paymybuddy.paymybuddy.dto.TransactionFullDto;
 import com.paymybuddy.paymybuddy.dto.TransactionLightDto;
 
+import java.util.List;
 import java.util.Set;
 
 public interface ITransactionService {
@@ -15,7 +16,7 @@ public interface ITransactionService {
 
     void deleteTransactionById(Integer id);
 
-    Set<TransactionLightDto> getTransactionsBySender(Integer senderId);
+    List<TransactionLightDto> getTransactionsBySender(Integer senderId);
 
 
 }
