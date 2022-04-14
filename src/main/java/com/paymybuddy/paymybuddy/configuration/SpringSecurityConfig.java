@@ -43,10 +43,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/person**").permitAll()
                 .antMatchers("/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
-                //.and()
-                //.rememberMe()
-                //.key("Xgt124589*-thHHfhotfR")
-                //.tokenValiditySeconds(86400)
                 .and()
                 .httpBasic()
                 .authenticationEntryPoint(authenticationEntryPoint);

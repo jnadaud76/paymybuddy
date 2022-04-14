@@ -18,6 +18,7 @@ What things you need to install the software and how to install them
 
 - Java 1.8
 - Maven 3.8.2
+- MySql 8.0.27
 
 ### Installing
 
@@ -30,6 +31,12 @@ https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.
 2.Install Maven:
 
 https://maven.apache.org/install.html
+
+3.Install DataBase:
+
+For security reasons, you should use your own database system by changing spring.datasource.url and spring.datasource.username in the application.properties file. In any case the password or the whole configuration will have to be outsourced.
+
+src/main/resources/schema.sql and src/main/resources/data.sql will be loaded when the application run.
 
 ### Default configuration
 
