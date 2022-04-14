@@ -28,23 +28,23 @@ public class Transaction {
     private LocalDateTime date;
 
     @ManyToOne
-    @JoinColumn (name = "recipient", referencedColumnName = "ID", nullable = false)
+    @JoinColumn(name = "recipient", referencedColumnName = "ID", nullable = false)
     private Person recipient;
 
     @ManyToOne
     @JoinColumn(name = "sender", referencedColumnName = "ID", nullable = false)
     private Person sender;
 
-    @Range(min=0, max=1000)
+    @Range(min = 0, max = 1000)
     @Column(name = "AMOUNT", nullable = false)
     private int amount;
 
-    @Length (max=100)
-    @Column(name = "DESCRIPTION" , length=100)
+    @Length(max = 100)
+    @Column(name = "DESCRIPTION", length = 100)
     private String description;
 
-    @Range(min=0, max=200)
-    @Column(name = "FEE_AMOUNT", nullable = false, precision = 5, scale=2)
+    @Range(min = 0, max = 200)
+    @Column(name = "FEE_AMOUNT", nullable = false, precision = 5, scale = 2)
     private double feeAmount;
 
     public int getId() {
@@ -66,7 +66,6 @@ public class Transaction {
     public Person getRecipient() {
         return recipient;
     }
-
 
     public void setRecipient(Person recipient) {
         this.recipient = recipient;
@@ -103,6 +102,5 @@ public class Transaction {
     public void setFeeAmount(double feeAmount) {
         this.feeAmount = feeAmount;
     }
-
 
 }

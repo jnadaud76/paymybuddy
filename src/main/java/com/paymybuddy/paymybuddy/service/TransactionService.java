@@ -42,7 +42,7 @@ public class TransactionService implements ITransactionService {
         for (Transaction transaction : transactionSet) {
             TransactionFullDto transactionFullDto = conversionService.transactionToFullDto(transaction);
             transactionFullDtoSet.add(transactionFullDto);
-                 }
+        }
         return transactionFullDtoSet;
     }
 
@@ -51,19 +51,18 @@ public class TransactionService implements ITransactionService {
         Set<TransactionFullDto> transactionFullDtoSet = getTransactions().stream()
                 .filter(transactionFullDto -> transactionFullDto.getSender() == senderId)
                 .collect(Collectors.toSet());
-         for (TransactionFullDto t : transactionFullDtoSet){
-             TransactionLightDto transactionLightDto = new TransactionLightDto();
-             transactionLightDto.setId(t.getId());
-             transactionLightDto.setRecipient(personService.getPersonById(t.getRecipient()).getLastName()
-             );
-             transactionLightDto.setAmount(t.getAmount());
-             transactionLightDto.setDescription(t.getDescription());
-             transactionLightDtoSet.add(transactionLightDto);
-         }
+        for (TransactionFullDto t : transactionFullDtoSet) {
+            TransactionLightDto transactionLightDto = new TransactionLightDto();
+            transactionLightDto.setId(t.getId());
+            transactionLightDto.setRecipient(personService.getPersonById(t.getRecipient()).getLastName()
+            );
+            transactionLightDto.setAmount(t.getAmount());
+            transactionLightDto.setDescription(t.getDescription());
+            transactionLightDtoSet.add(transactionLightDto);
+        }
         return transactionLightDtoSet.stream()
-                 .sorted(Comparator.comparing(TransactionLightDto::getId).reversed())
+                .sorted(Comparator.comparing(TransactionLightDto::getId).reversed())
                 .collect(Collectors.toList());
-
 
     }
 

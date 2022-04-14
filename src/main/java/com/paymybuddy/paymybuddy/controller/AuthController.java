@@ -1,7 +1,6 @@
 package com.paymybuddy.paymybuddy.controller;
 
 
-
 import com.paymybuddy.paymybuddy.dto.PersonFullDto;
 import com.paymybuddy.paymybuddy.service.IPersonService;
 
@@ -14,9 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
-
 @RestController
-@RequestMapping(value ="api")
+@RequestMapping(value = "api")
 public class AuthController {
 
 
@@ -32,7 +30,7 @@ public class AuthController {
     @GetMapping(value = "/user")
     public ResponseEntity<PersonFullDto>
     getPersonByEmail(@RequestParam final String email) {
-       return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(personService.getPersonByEmail(email));
 
     }

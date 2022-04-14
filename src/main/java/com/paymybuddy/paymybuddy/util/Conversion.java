@@ -45,7 +45,7 @@ public class Conversion implements IConversion {
         return person;
     }
 
-    public PersonConnectionDto connectionToConnectionDto (final Person connection) {
+    public PersonConnectionDto connectionToConnectionDto(final Person connection) {
         PersonConnectionDto personConnectionDto = new PersonConnectionDto();
         personConnectionDto.setId(connection.getId());
         personConnectionDto.setFirstName(connection.getFirstName());
@@ -55,25 +55,25 @@ public class Conversion implements IConversion {
         return personConnectionDto;
     }
 
-   public Transaction fullDtoToTransaction (final TransactionFullDto transactionFullDto) {
-           Transaction transaction = new Transaction();
-           transaction.setDate(LocalDateTime.now());
-           transaction.setRecipient(personRepository.findById(transactionFullDto.getRecipient()).get());
-           transaction.setSender(personRepository.findById(transactionFullDto.getSender()).get());
-           transaction.setAmount(transactionFullDto.getAmount());
-           transaction.setDescription(transactionFullDto.getDescription());
-           transaction.setFeeAmount(transactionFullDto.getAmount() * feeRate);
-           return transaction;
+    public Transaction fullDtoToTransaction(final TransactionFullDto transactionFullDto) {
+        Transaction transaction = new Transaction();
+        transaction.setDate(LocalDateTime.now());
+        transaction.setRecipient(personRepository.findById(transactionFullDto.getRecipient()).get());
+        transaction.setSender(personRepository.findById(transactionFullDto.getSender()).get());
+        transaction.setAmount(transactionFullDto.getAmount());
+        transaction.setDescription(transactionFullDto.getDescription());
+        transaction.setFeeAmount(transactionFullDto.getAmount() * feeRate);
+        return transaction;
 
-   }
+    }
 
-    public TransactionFullDto transactionToFullDto (final Transaction transaction){
-    TransactionFullDto transactionFullDto = new TransactionFullDto();
-    transactionFullDto.setId(transaction.getId());
-    transactionFullDto.setRecipient(transaction.getRecipient().getId());
-    transactionFullDto.setSender(transaction.getSender().getId());
-    transactionFullDto.setAmount(transaction.getAmount());
-    transactionFullDto.setDescription(transaction.getDescription());
-    return transactionFullDto;
+    public TransactionFullDto transactionToFullDto(final Transaction transaction) {
+        TransactionFullDto transactionFullDto = new TransactionFullDto();
+        transactionFullDto.setId(transaction.getId());
+        transactionFullDto.setRecipient(transaction.getRecipient().getId());
+        transactionFullDto.setSender(transaction.getSender().getId());
+        transactionFullDto.setAmount(transaction.getAmount());
+        transactionFullDto.setDescription(transaction.getDescription());
+        return transactionFullDto;
     }
 }

@@ -4,15 +4,11 @@ public class TransactionLightDto {
 
     private int id;
 
-
     private String recipient;
-
 
     private int amount;
 
-
     private String description;
-
 
     public int getId() {
         return id;

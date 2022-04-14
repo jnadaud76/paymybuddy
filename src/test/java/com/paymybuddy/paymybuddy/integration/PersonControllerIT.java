@@ -16,10 +16,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
 
 
@@ -45,9 +50,9 @@ class PersonControllerIT {
         mockMvc.perform(get("/api/possibleconnections")
                         .queryParam("personId", String.valueOf(ints)))
                 .andExpect(status().isOk());
-     }
+    }
 
-   @Test
+    @Test
     void TestGetPossibleConnectionWithBadId() throws Exception {
         mockMvc.perform(get("/api/possibleconnections")
                         .queryParam("personId", "123"))
@@ -130,7 +135,7 @@ class PersonControllerIT {
 
     @Test
     void TestRemoveConnection() throws Exception {
-            mockMvc.perform(put("/api/person/connection/remove")
+        mockMvc.perform(put("/api/person/connection/remove")
                         .queryParam("personId", "1")
                         .queryParam("connectionId", "3"))
                 .andExpect(status().isOk());
@@ -138,7 +143,7 @@ class PersonControllerIT {
 
     @Test
     void TestRemoveConnectionWhichAlreadyExist() throws Exception {
-              mockMvc.perform(put("/api/person/connection/remove")
+        mockMvc.perform(put("/api/person/connection/remove")
                         .queryParam("personId", "1")
                         .queryParam("connectionId", "19"))
                 .andExpect(status().isBadRequest());
@@ -146,7 +151,7 @@ class PersonControllerIT {
 
     @Test
     void TestRemoveConnectionWithBadArgument() throws Exception {
-              mockMvc.perform(put("/api/person/connection/remove")
+        mockMvc.perform(put("/api/person/connection/remove")
                         .queryParam("personId", "17")
                         .queryParam("connectionId", "12"))
                 .andExpect(status().isBadRequest());
@@ -169,7 +174,7 @@ class PersonControllerIT {
 
     @Test
     void TestToIban() throws Exception {
-               mockMvc.perform(put("/api/toiban")
+        mockMvc.perform(put("/api/toiban")
                         .queryParam("personId", "1")
                         .queryParam("amount", "100"))
                 .andExpect(status().isOk());
@@ -178,7 +183,7 @@ class PersonControllerIT {
 
     @Test
     void TestToIbanWithBadValue() throws Exception {
-           mockMvc.perform(put("/api/toiban")
+        mockMvc.perform(put("/api/toiban")
                         .queryParam("personId", "1")
                         .queryParam("amount", "10000"))
                 .andExpect(status().isBadRequest());
@@ -188,7 +193,7 @@ class PersonControllerIT {
 
     @Test
     void TestFromIban() throws Exception {
-            mockMvc.perform(put("/api/fromiban")
+        mockMvc.perform(put("/api/fromiban")
                         .queryParam("personId", "1")
                         .queryParam("amount", "1000"))
                 .andExpect(status().isOk());
@@ -206,7 +211,7 @@ class PersonControllerIT {
     @ValueSource(ints = {24, 32, 99})
     void TestDeletePersonWithBadId(int ints) throws Exception {
         mockMvc.perform(delete("/api/person)")
-                .queryParam("personId", String.valueOf(ints)))
+                        .queryParam("personId", String.valueOf(ints)))
                 .andExpect(status().isNotFound());
 
     }

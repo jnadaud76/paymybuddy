@@ -19,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
@@ -39,14 +40,14 @@ class TransactionControllerIT {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void TestGetTransactionById(int ints) throws Exception {
-             mockMvc.perform(get("/api/transaction")
+        mockMvc.perform(get("/api/transaction")
                         .queryParam("transactionId", String.valueOf(ints)))
                 .andExpect(status().isOk());
     }
 
     @Test
     void TestGetTransactionBySender() throws Exception {
-              mockMvc.perform(get("/api/transactions/sender")
+        mockMvc.perform(get("/api/transactions/sender")
                         .queryParam("senderId", "1"))
                 .andExpect(status().isOk());
     }
@@ -61,10 +62,8 @@ class TransactionControllerIT {
     }
 
 
-
-
     @ParameterizedTest
-    @ValueSource(ints= {18, 24, 39})
+    @ValueSource(ints = {18, 24, 39})
     void TestGetTransactionByIdWithBad(int ints) throws Exception {
 
         mockMvc.perform(get("/api/transaction")
@@ -105,7 +104,7 @@ class TransactionControllerIT {
     }
 
     @ParameterizedTest
-    @CsvSource(value={"1|89","2|31","58|327"}, delimiter='|')
+    @CsvSource(value = {"1|89", "2|31", "58|327"}, delimiter = '|')
     void TestCreateTransactionWithBadArgument(int a, int b) throws Exception {
         TransactionFullDto transactionFullDto = new TransactionFullDto();
         transactionFullDto.setSender(a);
@@ -117,7 +116,7 @@ class TransactionControllerIT {
         mockMvc.perform(post("/api/transaction")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(transactionAsString))
-                        .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest());
     }
 
     @Test

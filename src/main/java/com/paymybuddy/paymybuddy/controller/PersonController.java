@@ -29,13 +29,12 @@ import io.swagger.annotations.ApiOperation;
 
 @Api("API for people CRUD operations.")
 @RestController
-@RequestMapping(value ="api")
+@RequestMapping(value = "api")
 public class PersonController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PersonController.class);
     @Autowired
     IPersonService personService;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(PersonController.class);
 
     @ApiOperation(value = "Retrieve all user.")
     @GetMapping("/persons")
@@ -45,8 +44,8 @@ public class PersonController {
     }
 
     @ApiOperation(value = "Retrieve all connections that can be added.")
-    @GetMapping (value = "/possibleconnections")
-    public ResponseEntity<Set<PersonMailDto>> getPossibleConnection (@RequestParam final Integer personId){
+    @GetMapping(value = "/possibleconnections")
+    public ResponseEntity<Set<PersonMailDto>> getPossibleConnection(@RequestParam final Integer personId) {
         if (!personService.getPossibleConnection(personId).isEmpty()) {
             LOGGER.info("Possible connections successfully found - code : {}", HttpStatus.OK);
             return ResponseEntity.status(HttpStatus.OK)
@@ -60,9 +59,9 @@ public class PersonController {
     @ApiOperation(value = "Retrieve one user by id.")
     @GetMapping(value = "/person")
     public ResponseEntity<PersonFullDto>
-    getPersonById (@RequestParam final Integer personId) {
+    getPersonById(@RequestParam final Integer personId) {
         if (personService.getPersonById(personId) != null) {
-           LOGGER.info("Person successfully found - code : {}", HttpStatus.OK);
+            LOGGER.info("Person successfully found - code : {}", HttpStatus.OK);
             return ResponseEntity.status(HttpStatus.OK)
                     .body(personService.getPersonById(personId));
         } else {
@@ -88,7 +87,7 @@ public class PersonController {
     }
 
     @ApiOperation(value = "Add a connection to user.")
-    @PutMapping (value = "person/connection/add")
+    @PutMapping(value = "person/connection/add")
     public ResponseEntity<String> addConnection(@RequestParam final Integer personId, @RequestParam final Integer connectionId) {
         try {
             personService.addConnection(personId, connectionId);
@@ -120,8 +119,8 @@ public class PersonController {
     }
 
     @ApiOperation(value = "Transfers money from user's application account to the user's bank account.")
-    @PutMapping (value="/toiban")
-    public ResponseEntity<String> toIban (@RequestParam final Integer personId, @RequestParam final Integer amount) {
+    @PutMapping(value = "/toiban")
+    public ResponseEntity<String> toIban(@RequestParam final Integer personId, @RequestParam final Integer amount) {
         try {
             personService.toIbanTransfer(personId, amount);
             LOGGER.info("Transfer completed successfully - code : {}", HttpStatus.OK);
@@ -136,19 +135,19 @@ public class PersonController {
     }
 
     @ApiOperation(value = "Transfers money from user's bank account to user's application account.")
-    @PutMapping (value="/fromiban")
-    public ResponseEntity<String> fromIban (@RequestParam final Integer personId, @RequestParam final Integer amount) {
-            personService.fromIbanTransfer(personId, amount);
-            LOGGER.info("Transfer completed successfully - code : {}", HttpStatus.OK);
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body("Transfer completed successfully.");
+    @PutMapping(value = "/fromiban")
+    public ResponseEntity<String> fromIban(@RequestParam final Integer personId, @RequestParam final Integer amount) {
+        personService.fromIbanTransfer(personId, amount);
+        LOGGER.info("Transfer completed successfully - code : {}", HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("Transfer completed successfully.");
 
     }
 
     @ApiOperation(value = "Retrieve all user's connections by user's id.")
-    @GetMapping (value = "/connections")
-    public ResponseEntity<Set<PersonConnectionDto>> getConnectionFromPerson(@RequestParam final Integer personId){
-         if (!personService.getConnectionsFromPerson(personId).isEmpty()) {
+    @GetMapping(value = "/connections")
+    public ResponseEntity<Set<PersonConnectionDto>> getConnectionFromPerson(@RequestParam final Integer personId) {
+        if (!personService.getConnectionsFromPerson(personId).isEmpty()) {
             LOGGER.info("Connections successfully found - code : {}", HttpStatus.OK);
             return ResponseEntity.status(HttpStatus.OK)
                     .body(personService.getConnectionsFromPerson(personId));

@@ -3,6 +3,7 @@ package com.paymybuddy.paymybuddy.model;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
+
 import java.util.HashSet;
 
 import java.util.Set;
@@ -22,7 +23,6 @@ import javax.persistence.Table;
 
 import javax.validation.constraints.Email;
 
-
 @Entity
 @DynamicUpdate
 @Table(name = "person")
@@ -32,17 +32,17 @@ public class Person {
     @Column(name = "ID")
     private int id;
 
-    @Length(max=100)
-    @Column(name = "FIRSTNAME", nullable = false, length=100)
+    @Length(max = 100)
+    @Column(name = "FIRSTNAME", nullable = false, length = 100)
     private String firstName;
 
-    @Length(max=100)
-    @Column(name = "LASTNAME", nullable = false, length=100)
+    @Length(max = 100)
+    @Column(name = "LASTNAME", nullable = false, length = 100)
     private String lastName;
 
-    @Length(max=100)
+    @Length(max = 100)
     @Email
-    @Column(name = "EMAIL", unique = true, nullable = false, length=100)
+    @Column(name = "EMAIL", unique = true, nullable = false, length = 100)
     private String email;
 
     //@Pattern(regexp="(?=.{8,20}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\W).*$")
@@ -50,18 +50,18 @@ public class Person {
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Length(min=27,max=34)
-    @Column(name = "IBAN", nullable = false, length=34)
+    @Length(min = 27, max = 34)
+    @Column(name = "IBAN", nullable = false, length = 34)
     private String iban;
 
-    @Range(min=0, max=999999)
-    @Column(name = "AMOUNT_AVAILABLE",nullable = false, precision = 8, scale=2)
+    @Range(min = 0, max = 999999)
+    @Column(name = "AMOUNT_AVAILABLE", nullable = false, precision = 8, scale = 2)
     private double amountAvailable;
 
     @OneToMany(
             mappedBy = "sender",
             cascade = CascadeType.PERSIST
-                            )
+    )
     private Set<Transaction> transactions = new HashSet<>();
 
     @OneToMany(
@@ -71,12 +71,12 @@ public class Person {
     private Set<Transaction> transactionsRecipient = new HashSet<>();
 
     @ManyToMany(
-          fetch = FetchType.LAZY,
+            fetch = FetchType.LAZY,
 
-          cascade = {
+            cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
-                    }
+            }
     )
     @JoinTable(
             name = "person_connection",

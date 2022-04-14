@@ -1,25 +1,18 @@
 package com.paymybuddy.paymybuddy.dto;
 
-import java.util.Objects;
-
 public class TransactionFullDto {
 
     private int id;
 
-
     private int recipient;
-
 
     private int sender;
 
-
     private int amount;
-
 
     private String description;
 
-
-   public int getId() {
+    public int getId() {
         return id;
     }
 

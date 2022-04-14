@@ -2,24 +2,17 @@ package com.paymybuddy.paymybuddy.dto;
 
 public class PersonFullDto {
 
-
     private int id;
-
 
     private String firstName;
 
-
     private String lastName;
-
 
     private String email;
 
-
     private String password;
 
-
     private String iban;
-
 
     private double amountAvailable;
 
@@ -27,8 +20,8 @@ public class PersonFullDto {
         return id;
     }
 
-    public void setId(int Id) {
-        this.id = Id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {

@@ -27,13 +27,12 @@ import io.swagger.annotations.ApiOperation;
 
 @Api("API for transaction CRUD operations.")
 @RestController
-@RequestMapping(value ="api")
+@RequestMapping(value = "api")
 public class TransactionController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionController.class);
     @Autowired
     ITransactionService transactionService;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionController.class);
 
     @ApiOperation(value = "Retrieve all transactions.")
     @GetMapping("/transactions")

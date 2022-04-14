@@ -29,6 +29,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashSet;
@@ -130,12 +131,12 @@ class PersonControllerTest {
 
         mockMvc.perform(post("/api/person")
                         .contentType(MediaType.APPLICATION_JSON))
-                               .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     void TestAddConnection() throws Exception {
-        personService.addConnection(1,3);
+        personService.addConnection(1, 3);
         mockMvc.perform(put("/api/person/connection/add")
                         .queryParam("personId", "1")
                         .queryParam("connectionId", "3"))
@@ -144,7 +145,7 @@ class PersonControllerTest {
 
     @Test
     void TestAddConnectionWhichAlreadyExist() throws Exception {
-        doThrow(new IllegalArgumentException()).when(personService).addConnection(1,2);
+        doThrow(new IllegalArgumentException()).when(personService).addConnection(1, 2);
         mockMvc.perform(put("/api/person/connection/add")
                         .queryParam("personId", "1")
                         .queryParam("connectionId", "2"))
@@ -153,7 +154,7 @@ class PersonControllerTest {
 
     @Test
     void TestAddConnectionWithBadArgument() throws Exception {
-        doThrow(new IllegalArgumentException()).when(personService).addConnection(17,12);
+        doThrow(new IllegalArgumentException()).when(personService).addConnection(17, 12);
         mockMvc.perform(put("/api/person/connection/add")
                         .queryParam("personId", "17")
                         .queryParam("connectionId", "12"))
@@ -162,7 +163,7 @@ class PersonControllerTest {
 
     @Test
     void TestRemoveConnection() throws Exception {
-        personService.removeConnection(1,2);
+        personService.removeConnection(1, 2);
         mockMvc.perform(put("/api/person/connection/remove")
                         .queryParam("personId", "1")
                         .queryParam("connectionId", "2"))
@@ -171,7 +172,7 @@ class PersonControllerTest {
 
     @Test
     void TestRemoveConnectionWhichAlreadyExist() throws Exception {
-        doThrow(new IllegalArgumentException()).when(personService).removeConnection(1,19);
+        doThrow(new IllegalArgumentException()).when(personService).removeConnection(1, 19);
         mockMvc.perform(put("/api/person/connection/remove")
                         .queryParam("personId", "1")
                         .queryParam("connectionId", "19"))
@@ -180,7 +181,7 @@ class PersonControllerTest {
 
     @Test
     void TestRemoveConnectionWithBadArgument() throws Exception {
-        doThrow(new IllegalArgumentException()).when(personService).removeConnection(17,12);
+        doThrow(new IllegalArgumentException()).when(personService).removeConnection(17, 12);
         mockMvc.perform(put("/api/person/connection/remove")
                         .queryParam("personId", "17")
                         .queryParam("connectionId", "12"))
@@ -208,9 +209,9 @@ class PersonControllerTest {
     void TestToIban(int ints) throws Exception {
         personService.toIbanTransfer(1, ints);
         mockMvc.perform(put("/api/toiban")
-                .queryParam("personId", "1")
-                .queryParam("amount", String.valueOf(ints)))
-        .andExpect(status().isOk());
+                        .queryParam("personId", "1")
+                        .queryParam("amount", String.valueOf(ints)))
+                .andExpect(status().isOk());
 
     }
 

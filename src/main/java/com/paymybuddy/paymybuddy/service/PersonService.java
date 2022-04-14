@@ -50,8 +50,8 @@ public class PersonService implements IPersonService {
         return personFullDtoSet;
     }
 
-    public PersonFullDto getPersonByEmail (String email){
-        if(personRepository.findByEmail(email)!=null) {
+    public PersonFullDto getPersonByEmail(String email) {
+        if (personRepository.findByEmail(email) != null) {
             Person person = personRepository.findByEmail(email);
             return conversionService.personToFullDto(person);
         } else {
@@ -69,7 +69,7 @@ public class PersonService implements IPersonService {
     }
 
     public PersonFullDto addPerson(PersonFullDto personFullDto) {
-        if (getPersonByEmail(personFullDto.getEmail())==null) {
+        if (getPersonByEmail(personFullDto.getEmail()) == null) {
             Person person = conversionService.fullDtoToPerson(personFullDto);
             person.setPassword(passwordEncoder().encode(person.getPassword()));
             personRepository.save(person);
@@ -87,8 +87,8 @@ public class PersonService implements IPersonService {
         }
     }
 
-    public Set<PersonMailDto> getPossibleConnection (Integer personId) {
-          if (personRepository.existsById(personId)) {
+    public Set<PersonMailDto> getPossibleConnection(Integer personId) {
+        if (personRepository.existsById(personId)) {
             Set<PersonMailDto> personMailDtoSet = new HashSet<>();
             Set<PersonFullDto> personFullDtoSet = getPersons().stream().filter(personFullDto -> personFullDto.getId() != personId
             ).collect(Collectors.toSet());
@@ -147,7 +147,7 @@ public class PersonService implements IPersonService {
     }
 
     public Set<PersonConnectionDto> getConnectionsFromPerson(Integer personId) {
-         if (personRepository.existsById(personId)) {
+        if (personRepository.existsById(personId)) {
             Person person = personRepository.findById(personId).get();
             Set<PersonConnectionDto> connectionDtoSet = new HashSet<>();
             for (Person connection : person.getConnections()) {
@@ -156,17 +156,17 @@ public class PersonService implements IPersonService {
             }
             return connectionDtoSet;
         } else {
-                return new HashSet<>();
-            }
+            return new HashSet<>();
+        }
     }
 
     public void toIbanTransfer(Integer personId, Integer amount) {
-    calculator.updateAmountToIban(personId,amount);
-    personRepository.save(personRepository.findById(personId).get());
+        calculator.updateAmountToIban(personId, amount);
+        personRepository.save(personRepository.findById(personId).get());
     }
 
-    public void fromIbanTransfer(Integer personId, Integer amount){
-    calculator.updateAmountFromIban(personId, amount);
+    public void fromIbanTransfer(Integer personId, Integer amount) {
+        calculator.updateAmountFromIban(personId, amount);
         personRepository.save(personRepository.findById(personId).get());
     }
 

@@ -18,5 +18,4 @@ public interface ITransactionService {
 
     List<TransactionLightDto> getTransactionsBySender(Integer senderId);
 
-
 }

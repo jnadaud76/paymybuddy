@@ -16,5 +16,4 @@ public interface PersonRepository extends CrudRepository<Person, Integer> {
 
     Person findByEmail(String email);
 
-
 }
